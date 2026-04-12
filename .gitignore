@@ -1,0 +1,19 @@
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Sessioni e note private
+sessioni/
+
+# Dati clienti sensibili
+clienti/
+
+# Amazon (dati privati)
+amazon/
+
+# Automazioni con credenziali
+automazioni/
+
+# Agenti con config privata
+agenti/

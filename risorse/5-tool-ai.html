@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I 5 Tool AI che uso ogni giorno — Digital Sam</title>
+  <meta name="description" content="La lista dei 5 tool AI che Samantha Del Vecchio aka Digital Sam usa ogni giorno per creare contenuti. Gratis o quasi." />
+  <style>
+    :root {
+      --cyan: #4DD9F0;
+      --gold: #F5A623;
+      --dark: #07101E;
+      --dark-2: #0d1f35;
+      --dark-3: #112240;
+      --text: #e8f4f8;
+      --text-muted: #8aa8b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    /* ── HEADER ── */
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(77,217,240,0.15);
+    }
+    .brand-logo {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--cyan);
+      letter-spacing: 0.04em;
+    }
+    .brand-logo span { color: var(--gold); }
+    .brand-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: rgba(77,217,240,0.08);
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(77,217,240,0.15);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 8px 0 36px;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.25);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--cyan);
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 14px;
+      max-width: 440px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--gold), transparent);
+      margin: 32px 0;
+      opacity: 0.5;
+    }
+
+    /* ── TOOL CARD ── */
+    .tool-card {
+      background: var(--dark-2);
+      border: 1px solid rgba(77,217,240,0.12);
+      border-radius: 16px;
+      padding: 22px 20px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s;
+    }
+    .tool-card:hover {
+      border-color: rgba(77,217,240,0.4);
+      box-shadow: 0 0 24px rgba(77,217,240,0.07);
+      transform: translateY(-2px);
+    }
+    .tool-number {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      font-size: 48px;
+      font-weight: 900;
+      color: rgba(77,217,240,0.06);
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+
+    .tool-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .tool-emoji {
+      font-size: 28px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .tool-meta {}
+    .tool-name {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 3px;
+    }
+    .tool-category {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    .tool-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+    .tool-desc strong { color: var(--text); }
+
+    /* ── USEIT BOX ── */
+    .use-it {
+      background: var(--dark-3);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+    .use-it-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .use-it p {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ── PRICE BADGE ── */
+    .price-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .price-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .price-free  { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+    .price-paid  { background: rgba(77,217,240,0.1);  color: var(--cyan); border: 1px solid rgba(77,217,240,0.2); }
+    .price-aff   { background: rgba(245,166,35,0.1);  color: var(--gold); border: 1px solid rgba(245,166,35,0.2); }
+
+    /* ── CTA ── */
+    .tool-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.18s, transform 0.15s;
+    }
+    .tool-cta:hover { opacity: 0.85; transform: scale(1.02); }
+    .cta-cyan { background: var(--cyan); color: var(--dark); }
+    .cta-outline { background: rgba(77,217,240,0.1); color: var(--cyan); border: 1px solid rgba(77,217,240,0.3); }
+
+    /* ── FOOTER ── */
+    .resource-footer {
+      margin-top: 44px;
+      text-align: center;
+      padding: 28px 20px;
+      background: var(--dark-2);
+      border-radius: 16px;
+      border: 1px solid rgba(245,166,35,0.2);
+    }
+    .resource-footer h3 {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .resource-footer p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .footer-link {
+      padding: 9px 20px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.18s;
+    }
+    .footer-link:hover { opacity: 0.82; }
+    .fl-cyan { background: var(--cyan); color: var(--dark); }
+    .fl-ghost { background: rgba(77,217,240,0.1); color: var(--cyan); border: 1px solid rgba(77,217,240,0.2); }
+
+    .page-footer {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 11px;
+      color: #2a3f50;
+    }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .tool-card { background: #f8f8f8; border-color: #ddd; break-inside: avoid; }
+      .tool-number { color: rgba(0,0,0,0.05); }
+      .tool-desc, .use-it p { color: #444; }
+      .resource-footer { display: none; }
+    }
+
+    /* ── ANIMATIONS ── */
+    .tool-card {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .tool-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.2s, box-shadow 0.2s;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- BRAND BAR -->
+  <div class="brand-bar">
+    <div class="brand-logo">Digital<span>Sam</span></div>
+    <div class="brand-tag">Risorsa gratuita</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">🎁 Download gratuito</div>
+    <h1>I <em>5 Tool AI</em> che uso<br/>ogni giorno</h1>
+    <p>Non la lista di ogni tool AI che esiste. Solo quelli che apro davvero, ogni giorno, e che hanno cambiato il mio modo di lavorare. Con prezzi reali, link diretti e come li uso concretamente.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TOOL 1 — ELEVENLABS -->
+  <div class="tool-card">
+    <div class="tool-number">01</div>
+    <div class="tool-header">
+      <div class="tool-emoji">🎙️</div>
+      <div class="tool-meta">
+        <div class="tool-name">ElevenLabs</div>
+        <div class="tool-category">Voce AI &amp; Clonazione audio</div>
+      </div>
+    </div>
+    <p class="tool-desc">
+      Il tool che ha rivoluzionato il mio audio. Con ElevenLabs ho clonato la mia voce in 5 minuti — e ora la uso per creare contenuti audio, doppiaggi e voci per i miei video <strong>senza dover registrare ogni volta</strong>. La qualità è incredibilmente realistica: le persone pensano che stia parlando davvero.
+    </p>
+    <div class="use-it">
+      <div class="use-it-label">📌 Come lo uso</div>
+      <p>Clono la mia voce → genero audio per i reel → risparmio ore di registrazione. Lo uso anche per creare voci per i miei agenti AI su digitalsam.it.</p>
+    </div>
+    <div class="price-row">
+      <span class="price-badge price-free">✅ Piano gratuito disponibile</span>
+      <span class="price-badge price-aff">🔥 Ho il link affiliato</span>
+    </div>
+    <a href="https://try.elevenlabs.io/digitalsam" target="_blank" rel="noopener" class="tool-cta cta-cyan">
+      👉 Provalo con il mio link →
+    </a>
+  </div>
+
+  <!-- TOOL 2 — HEYGEN -->
+  <div class="tool-card">
+    <div class="tool-number">02</div>
+    <div class="tool-header">
+      <div class="tool-emoji">🤖</div>
+      <div class="tool-meta">
+        <div class="tool-name">HeyGen</div>
+        <div class="tool-category">Avatar AI &amp; Video automatici</div>
+      </div>
+    </div>
+    <p class="tool-desc">
+      Con HeyGen creo avatar realistici che parlano al posto mio. Carico un testo, scelgo l'avatar, e in pochi minuti ho un video professionale — <strong>senza essere davanti alla camera</strong>. Ideale per chi vuole scalare la produzione video senza scalare il tempo davanti allo schermo.
+    </p>
+    <div class="use-it">
+      <div class="use-it-label">📌 Come lo uso</div>
+      <p>Creo video dimostrativi per i clienti, doppiaggi in più lingue, contenuti evergreen. Ho 2 avatar già pronti e li sto perfezionando.</p>
+    </div>
+    <div class="price-row">
+      <span class="price-badge price-free">✅ Piano gratuito (1 min/mese)</span>
+      <span class="price-badge price-paid">💳 Pro da ~$29/mese</span>
+    </div>
+    <a href="https://www.heygen.com" target="_blank" rel="noopener" class="tool-cta cta-outline">
+      🌐 Vai a HeyGen →
+    </a>
+  </div>
+
+  <!-- TOOL 3 — CANVA AI -->
+  <div class="tool-card">
+    <div class="tool-number">03</div>
+    <div class="tool-header">
+      <div class="tool-emoji">🎨</div>
+      <div class="tool-meta">
+        <div class="tool-name">Canva (con AI)</div>
+        <div class="tool-category">Design &amp; Contenuti visuali</div>
+      </div>
+    </div>
+    <p class="tool-desc">
+      Già lo conoscevi. Ma con le funzioni AI integrate è tutta un'altra storia. <strong>Magic Write, Image Generator, Background Remover, Magic Resize</strong> — quello che prima richiedeva ore in Photoshop ora si fa in 30 secondi. È il mio quartier generale creativo quotidiano: grafiche, reel, caroselli, presentazioni.
+    </p>
+    <div class="use-it">
+      <div class="use-it-label">📌 Come lo uso</div>
+      <p>Creo tutti i template social da qui. Uso i layer per gestire design complessi (vedi il mio tutorial su Instagram). Con Magic Resize adatto ogni formato in 1 click.</p>
+    </div>
+    <div class="price-row">
+      <span class="price-badge price-free">✅ Piano gratuito disponibile</span>
+      <span class="price-badge price-paid">💳 Pro da €13/mese</span>
+    </div>
+    <a href="https://www.canva.com" target="_blank" rel="noopener" class="tool-cta cta-outline">
+      🌐 Prova Canva gratis →
+    </a>
+  </div>
+
+  <!-- TOOL 4 — CLAUDE / CHATGPT -->
+  <div class="tool-card">
+    <div class="tool-number">04</div>
+    <div class="tool-header">
+      <div class="tool-emoji">🧠</div>
+      <div class="tool-meta">
+        <div class="tool-name">Claude + ChatGPT</div>
+        <div class="tool-category">AI generativa &amp; Scrittura</div>
+      </div>
+    </div>
+    <p class="tool-desc">
+      Li uso entrambi, per cose diverse. <strong>Claude</strong> per strategia, analisi lunga, codice e ragionamento complesso — è il mio co-stratega H24. <strong>ChatGPT</strong> per caption veloci, brainstorming rapido, ricerca. Nessuno dei due da solo basta: insieme sono imbattibili.
+    </p>
+    <div class="use-it">
+      <div class="use-it-label">📌 Come li uso</div>
+      <p>Claude mi aiuta a costruire agenti vocali AI, strategie di contenuto e automazioni. ChatGPT per idee veloci e caption. Insieme mi risparmiano 3-4 ore al giorno.</p>
+    </div>
+    <div class="price-row">
+      <span class="price-badge price-free">✅ Entrambi gratuiti (versioni base)</span>
+      <span class="price-badge price-paid">💳 Pro da $20/mese ciascuno</span>
+    </div>
+    <a href="https://claude.ai" target="_blank" rel="noopener" class="tool-cta cta-outline" style="margin-right:8px;">
+      🌐 Claude →
+    </a>
+    <a href="https://chatgpt.com" target="_blank" rel="noopener" class="tool-cta cta-outline">
+      🌐 ChatGPT →
+    </a>
+  </div>
+
+  <!-- TOOL 5 — MAKE -->
+  <div class="tool-card">
+    <div class="tool-number">05</div>
+    <div class="tool-header">
+      <div class="tool-emoji">⚡</div>
+      <div class="tool-meta">
+        <div class="tool-name">Make (ex Integromat)</div>
+        <div class="tool-category">Automazioni &amp; Workflow no-code</div>
+      </div>
+    </div>
+    <p class="tool-desc">
+      Il collante di tutto. Make collega i miei tool tra loro e automatizza i processi ripetitivi — <strong>senza scrivere una riga di codice</strong>. Un'azione innesca un'altra, che innesca un'altra ancora. Il risultato è un sistema che lavora al posto tuo, anche quando dormi. È il tool che trasforma l'AI da "figata" a "business reale".
+    </p>
+    <div class="use-it">
+      <div class="use-it-label">📌 Come lo uso</div>
+      <p>Automazioni per lead, notifiche, raccolta dati, integrazione tra tool. Sto costruendo workflow per i clienti PMI — prenotazioni, risposte automatiche, follow-up.</p>
+    </div>
+    <div class="price-row">
+      <span class="price-badge price-free">✅ Piano gratuito (1000 ops/mese)</span>
+      <span class="price-badge price-paid">💳 Core da €9/mese</span>
+    </div>
+    <a href="https://www.make.com" target="_blank" rel="noopener" class="tool-cta cta-outline">
+      🌐 Prova Make gratis →
+    </a>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FOOTER CTA -->
+  <div class="resource-footer">
+    <h3>Vuoi vedere questi tool in azione?</h3>
+    <p>Seguimi sui social — condivido tutorial, workflow e tips ogni settimana.<br/>Zero aria fritta, solo roba che funziona.</p>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/samanthadelvecchi0" target="_blank" rel="noopener" class="footer-link fl-cyan">📸 Seguimi su Instagram</a>
+      <a href="https://digitalsam.it" target="_blank" rel="noopener" class="footer-link fl-ghost">🌐 digitalsam.it</a>
+    </div>
+  </div>
+
+  <p class="page-footer">
+    © 2026 Digital Sam · Samantha Del Vecchio<br/>
+    Aggiornato ad Aprile 2026 · digitalsam.info@gmail.com
+  </p>
+
+</div>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.tool-card').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.06}s`;
+    obs.observe(el);
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll('.tool-card').forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight)
+        el.classList.add('visible');
+    });
+  }, 50);
+</script>
+
+</body>
+</html>
