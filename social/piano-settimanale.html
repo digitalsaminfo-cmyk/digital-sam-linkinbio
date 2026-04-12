@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piano Settimanale — Digital Sam</title>
+<style>
+  :root {
+    --cyan: #4DD9F0;
+    --gold: #F5A623;
+    --dark: #07101E;
+    --dark2: #0D1F35;
+    --dark3: #132840;
+    --text: #E8F4FF;
+    --muted: #7A9BB5;
+    --green: #2ECC71;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--dark); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; padding-bottom: 60px; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--dark2), var(--dark3));
+    border-bottom: 2px solid var(--cyan);
+    padding: 24px 32px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 4px 24px rgba(77,217,240,0.1);
+  }
+  .header-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-dot { width: 10px; height: 10px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 10px var(--cyan); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 10px var(--cyan)} 50%{opacity:.5;box-shadow:0 0 20px var(--cyan)} }
+  .logo h1 { font-size: 1.3rem; font-weight: 700; color: var(--cyan); }
+  .logo h1 span { color: var(--muted); font-weight: 400; font-size: 0.9rem; }
+  .week-label { background: var(--dark); border: 1px solid var(--gold); color: var(--gold); padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+
+  .stats { display: flex; gap: 20px; flex-wrap: wrap; }
+  .stat { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
+  .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .stat-count { font-weight: 700; color: var(--text); }
+
+  /* REGOLA 80/20 BAR */
+  .ratio-bar { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .ratio-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+  .ratio-track { flex: 1; height: 6px; background: rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden; max-width: 200px; }
+  .ratio-fill { height: 100%; background: linear-gradient(90deg, var(--cyan) 0%, var(--cyan) 80%, var(--gold) 80%); border-radius: 10px; }
+  .ratio-note { font-size: 0.72rem; color: var(--muted); }
+  .ratio-note b { color: var(--cyan); } .ratio-note b.gold { color: var(--gold); }
+
+  /* FILTERS */
+  .filters { background: var(--dark2); padding: 14px 32px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid rgba(77,217,240,0.1); }
+  .filter-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .filter-group { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-btn { padding: 5px 13px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--muted); font-size: 0.78rem; cursor: pointer; transition: all .2s; font-family: inherit; }
+  .filter-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+  .filter-btn.active { background: var(--cyan); color: var(--dark); border-color: var(--cyan); font-weight: 700; }
+  .filter-btn.gold.active { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+  .filter-sep { width: 1px; height: 22px; background: rgba(255,255,255,0.08); }
+
+  /* TIMELINE */
+  .timeline { padding: 32px; max-width: 1100px; margin: 0 auto; }
+
+  /* DAY GROUP */
+  .day-group { margin-bottom: 8px; }
+  .day-header { display: flex; align-items: center; gap: 16px; padding: 12px 0; }
+  .day-circle { width: 52px; height: 52px; border-radius: 50%; background: var(--dark2); border: 2px solid rgba(77,217,240,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .day-circle.oggi { border-color: var(--gold); background: rgba(245,166,35,0.08); box-shadow: 0 0 16px rgba(245,166,35,0.15); }
+  .day-num { font-size: 1rem; font-weight: 700; line-height: 1; }
+  .day-name { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .day-line { flex: 1; height: 1px; background: rgba(77,217,240,0.08); }
+  .day-count { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+  .rest-day { padding: 6px 0 6px 68px; color: var(--muted); font-size: 0.82rem; font-style: italic; }
+
+  /* CARD */
+  .card { background: var(--dark2); border: 1px solid rgba(77,217,240,0.1); border-radius: 16px; margin: 0 0 10px 68px; overflow: hidden; transition: all .2s; }
+  .card:hover { border-color: rgba(77,217,240,0.25); }
+  .card.hidden { display: none; }
+  .card[data-tipo="vendita"] { border-left: 3px solid var(--gold); }
+
+  .card-header { display: flex; align-items: center; gap: 10px; padding: 14px 18px; cursor: pointer; user-select: none; flex-wrap: wrap; }
+
+  .channel-badge { padding: 3px 8px; border-radius: 10px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+  .ch-ig { background: rgba(225,48,108,.15); color: #E1306C; border: 1px solid rgba(225,48,108,.25); }
+  .ch-tk { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.15); }
+  .ch-fb { background: rgba(24,119,242,.15); color: #1877F2; border: 1px solid rgba(24,119,242,.25); }
+  .ch-li { background: rgba(0,119,181,.15); color: #0077B5; border: 1px solid rgba(0,119,181,.25); }
+  .ch-st { background: rgba(77,217,240,.08); color: var(--cyan); border: 1px solid rgba(77,217,240,.25); }
+
+  .format-tag { padding: 3px 8px; border-radius: 10px; font-size: 0.68rem; color: var(--gold); background: rgba(245,166,35,.08); border: 1px solid rgba(245,166,35,.18); white-space: nowrap; }
+  .card-title { flex: 1; font-size: 0.92rem; font-weight: 600; min-width: 180px; }
+
+  .tipo-badge { padding: 3px 10px; border-radius: 10px; font-size: 0.68rem; font-weight: 600; white-space: nowrap; }
+  .tipo-edu   { background: rgba(46,204,113,.1);  color: #2ECC71; border: 1px solid rgba(46,204,113,.2); }
+  .tipo-bts   { background: rgba(77,217,240,.08); color: var(--cyan); border: 1px solid rgba(77,217,240,.2); }
+  .tipo-ven   { background: rgba(245,166,35,.1);  color: var(--gold); border: 1px solid rgba(245,166,35,.25); }
+  .tipo-int   { background: rgba(231,76,60,.1);   color: #E74C3C; border: 1px solid rgba(231,76,60,.2); }
+  .tipo-per   { background: rgba(155,89,182,.12); color: #BB8FCE; border: 1px solid rgba(155,89,182,.25); }
+
+  .status-btn { padding: 5px 11px; border-radius: 20px; border: none; font-size: 0.72rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .2s; white-space: nowrap; }
+  .status-todo { background: rgba(255,255,255,.06); color: var(--muted); }
+  .status-wip  { background: rgba(245,166,35,.12); color: var(--gold); }
+  .status-done { background: rgba(46,204,113,.12); color: var(--green); }
+
+  .expand-icon { color: var(--muted); font-size: 0.75rem; transition: transform .2s; }
+
+  /* CARD BODY */
+  .card-body { display: none; padding: 0 20px 20px; border-top: 1px solid rgba(77,217,240,0.07); }
+  .card-body.open { display: block; }
+
+  .sec-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 16px 0 7px; }
+
+  .hook-box { background: var(--dark3); border-left: 3px solid var(--cyan); padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 0.9rem; font-style: italic; color: var(--cyan); line-height: 1.6; }
+
+  .caption-box { position: relative; background: var(--dark3); border: 1px solid rgba(255,255,255,.07); border-radius: 10px; padding: 14px 16px; }
+  .caption-text { font-size: 0.84rem; line-height: 1.75; color: var(--text); white-space: pre-wrap; padding-right: 60px; }
+  .copy-btn { position: absolute; top: 10px; right: 10px; background: var(--dark); border: 1px solid rgba(77,217,240,.3); color: var(--cyan); padding: 5px 10px; border-radius: 8px; font-size: 0.7rem; cursor: pointer; font-family: inherit; transition: all .2s; }
+  .copy-btn:hover { background: rgba(77,217,240,.08); }
+  .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+  .script-box { background: var(--dark3); border-radius: 10px; padding: 14px 16px; }
+  .script-line { margin-bottom: 8px; font-size: 0.82rem; line-height: 1.6; }
+  .t { color: var(--gold); font-weight: 700; font-size: 0.72rem; margin-right: 8px; }
+  .note { color: var(--muted); font-style: italic; font-size: 0.78rem; display: block; margin-top: 2px; margin-left: 0; }
+
+  .ht-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center; }
+  .ht { font-size: 0.73rem; color: var(--muted); background: rgba(255,255,255,.04); padding: 3px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,.07); }
+  .ht-copy { background: var(--dark); border: 1px solid rgba(77,217,240,.25); color: var(--cyan); padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; cursor: pointer; font-family: inherit; transition: all .2s; }
+  .ht-copy:hover { background: rgba(77,217,240,.08); }
+
+  .info-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .pill { padding: 4px 10px; border-radius: 8px; font-size: 0.73rem; background: rgba(255,255,255,.04); color: var(--muted); border: 1px solid rgba(255,255,255,.07); }
+  .pill b { color: var(--text); }
+  .pill.warn { background: rgba(245,166,35,.06); border-color: rgba(245,166,35,.2); color: var(--gold); }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); display: none; }
+  .empty-state.visible { display: block; }
+  .empty-state h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--text); }
+
+  .footer-note { text-align: center; padding: 24px; color: var(--muted); font-size: 0.76rem; }
+
+  @media(max-width:600px){
+    .header,.filters { padding: 14px 16px; }
+    .timeline { padding: 16px; }
+    .card { margin-left: 52px; }
+    .rest-day { padding-left: 52px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <div>
+        <h1>Digital Sam <span>— Piano Settimanale</span></h1>
+        <div style="color:var(--muted);font-size:0.77rem;margin-top:2px;">11–17 Aprile 2026</div>
+      </div>
+    </div>
+    <div class="week-label">📅 Apr 11 → 17</div>
+  </div>
+
+  <div class="ratio-bar">
+    <span class="ratio-label">80/20</span>
+    <div class="ratio-track"><div class="ratio-fill" id="ratio-fill" style="width:100%"></div></div>
+    <span class="ratio-note"><b id="cnt-valore">-</b> valore &nbsp;·&nbsp; <b class="gold" id="cnt-vendita">-</b> vendita</span>
+    <div style="flex:1"></div>
+    <div class="stats">
+      <div class="stat"><div class="stat-dot" style="background:var(--muted)"></div><span class="stat-count" id="c-todo">-</span> da fare</div>
+      <div class="stat"><div class="stat-dot" style="background:var(--gold)"></div><span class="stat-count" id="c-wip">-</span> in lav.</div>
+      <div class="stat"><div class="stat-dot" style="background:var(--green)"></div><span class="stat-count" id="c-done">-</span> pubblicati</div>
+    </div>
+  </div>
+</div>
+
+<div class="filters">
+  <span class="filter-label">Canale</span>
+  <div class="filter-group" id="fg-ch">
+    <button class="filter-btn active" data-f="ch" data-v="all">Tutti</button>
+    <button class="filter-btn" data-f="ch" data-v="ig">Instagram</button>
+    <button class="filter-btn" data-f="ch" data-v="tk">TikTok</button>
+    <button class="filter-btn" data-f="ch" data-v="fb">Facebook</button>
+    <button class="filter-btn" data-f="ch" data-v="li">LinkedIn</button>
+    <button class="filter-btn" data-f="ch" data-v="st">Stories</button>
+  </div>
+  <div class="filter-sep"></div>
+  <span class="filter-label">Stato</span>
+  <div class="filter-group" id="fg-st">
+    <button class="filter-btn gold active" data-f="st" data-v="all">Tutti</button>
+    <button class="filter-btn gold" data-f="st" data-v="todo">Da fare</button>
+    <button class="filter-btn gold" data-f="st" data-v="wip">In lav.</button>
+    <button class="filter-btn gold" data-f="st" data-v="done">Pubblicati</button>
+  </div>
+  <div class="filter-sep"></div>
+  <span class="filter-label">Tipo</span>
+  <div class="filter-group" id="fg-tp">
+    <button class="filter-btn active" data-f="tp" data-v="all">Tutti</button>
+    <button class="filter-btn" data-f="tp" data-v="valore">Valore</button>
+    <button class="filter-btn" data-f="tp" data-v="vendita">Vendita</button>
+  </div>
+</div>
+
+<div class="timeline" id="timeline">
+
+<!-- ══════════════════════════ SAB 11 APR ══ -->
+<div class="day-group">
+  <div class="day-header">
+    <div class="day-circle oggi"><span class="day-num" style="color:var(--gold)">11</span><span class="day-name">Sab</span></div>
+    <div class="day-line"></div>
+    <span class="day-count">2 contenuti</span>
+  </div>
+
+  <!-- 1. Stories IG — BTS / Personale -->
+  <div class="card" data-ch="st ig" data-status="todo" data-tipo="valore" data-id="1">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="channel-badge ch-st">Stories</span>
+      <span class="channel-badge ch-ig">IG</span>
+      <span class="format-tag">📲 Stories</span>
+      <div class="card-title">Vado a "pranzo con un'amica". Porto il laptop. Sono normale.</div>
+      <span class="tipo-badge tipo-per">Personale</span>
+      <button class="status-btn status-todo" onclick="cycleStatus(event,this)">⬜ Da fare</button>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sec-label">Tono</div>
+      <div class="hook-box">Autoironia pura. Non stai vendendo niente — stai mostrando chi sei. Questa è la storia che crea affezione.</div>
+
+      <div class="sec-label">Stories — 4 slide (10 min di lavoro)</div>
+      <div class="caption-box">
+        <pre class="caption-text">Slide 1:
+"Oggi ho un 'pranzo di lavoro'."
+[testo su sfondo scuro, font grande]
+
+Slide 2:
+"In realtà vado al SAx Pub da Debby
+che è la mia amica da anni.
+Ma porto comunque il laptop.
+Perché sono fatta così."
+[emoji 💻😬]
+
+Slide 3:
+"Nel caso vi chiedeste come funziona
+la vita di chi lavora da sola con un esercito di AI:
+esattamente così."
+[sticker domanda: "anche tu sei incapace di staccare?"]
+
+Slide 4:
+"Vi racconto com'è andata. Stay tuned."
+[GIF o boomerang del locale se possibile]</pre>
+        <button class="copy-btn" onclick="copyCaption(this)">Copia</button>
+      </div>
+      <div class="info-row">
+        <div class="pill">⏱ <b>10 min</b></div>
+        <div class="pill">🎯 Obiettivo: <b>affezione, umanità</b></div>
+        <div class="pill">📹 B-roll: <b>selfie video o foto SAx Pub</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Reel IG+TK — Educativo ironico -->
+  <div class="card" data-ch="ig tk" data-status="todo" data-tipo="valore" data-id="2">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="channel-badge ch-ig">IG</span>
+      <span class="channel-badge ch-tk">TikTok</span>
+      <span class="format-tag">🎬 Reel</span>
+      <div class="card-title">L'AI risponde al telefono meglio di me. E io lavoro con l'AI.</div>
+      <span class="tipo-badge tipo-edu">Educativo</span>
+      <button class="status-btn status-todo" onclick="cycleStatus(event,this)">⬜ Da fare</button>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sec-label">Hook (primissimi 3 secondi)</div>
+      <div class="hook-box">"L'AI risponde al telefono meglio di me. E io lavoro con l'AI da due anni. Benvenuti nel futuro."</div>
+
+      <div class="sec-label">Script (45 sec) — tono ironico, ritmo veloce</div>
+      <div class="script-box">
+        <div class="script-line"><span class="t">[0–3s]</span> "L'AI risponde al telefono meglio di me." <span class="note">— pausa teatrale, sguardo in camera</span></div>
+        <div class="script-line"><span class="t">[3–10s]</span> "Non dimentica le informazioni. Non dice 'aspetti che controllo'. Non ha giornate storte."</div>
+        <div class="script-line"><span class="t">[10–22s]</span> "Un agente vocale sa già chi sei, cosa vendi, i tuoi orari. E risponde come se fosse te. Senza che tu sollevi un dito." <span class="note">— mostra schermata demo digitalsam.it</span></div>
+        <div class="script-line"><span class="t">[22–35s]</span> "Mentre tu dormi, sei in cucina, sei con i clienti — lui sta rispondendo alle chiamate che altrimenti perderesti." <span class="note">— testo animato a schermo: chiamate in arrivo → risposta automatica</span></div>
+        <div class="script-line"><span class="t">[35–45s]</span> "Non è fantascienza. È quello che faccio io. Si chiama Digital Sam." <span class="note">— CTA: "Commenta AI se vuoi sapere come funziona"</span></div>
+      </div>
+
+      <div class="sec-label">Caption IG/TK</div>
+      <div class="caption-box">
+        <pre class="caption-text">L'AI risponde al telefono meglio di me.
+
+E io ci lavoro da due anni. 😅
+
+Non si dimentica niente.
+Non dice "aspetti che controllo".
+Non ha giornate no.
+
+Si chiama agente vocale AI.
+Ed è quello che costruisco per le attività locali.
+
+Commenta AI se vuoi capire come funziona 👇</pre>
+        <button class="copy-btn" onclick="copyCaption(this)">Copia</button>
+      </div>
+
+      <div class="sec-label">Hashtag IG</div>
+      <div class="ht-row" id="ht2">
+        <span class="ht">#digitalsam</span><span class="ht">#agentevocaleAI</span><span class="ht">#AIitalia</span><span class="ht">#automazione</span><span class="ht">#intelligenzaartificiale</span><span class="ht">#AIperPMI</span><span class="ht">#lavorareconlAI</span>
+        <button class="ht-copy" onclick="copyHt('ht2')">Copia #</button>
+      </div>
+      <div class="info-row">
+        <div class="pill">⏱ <b>30 min produzione</b></div>
+        <div class="pill">🎵 Voce: <b>ElevenLabs o diretta in camera</b></div>
+        <div class="pill">📹 B-roll: <b>demo digitalsam.it + screen rec</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ DOM 12 APR ══ -->
+<div class="day-group">
+  <div class="day-header">
+    <div class="day-circle"><span class="day-num">12</span><span class="day-name">Dom</span></div>
+    <div class="day-line"></div>
+    <span class="day-count">riposo</span>
+  </div>
+  <div class="rest-day">😴 Nessun contenuto programmato — stacca.</div>
+</div>
+
+<!-- ══════════════════════════ LUN 13 APR ══ -->
+<div class="day-group">
+  <div class="day-header">
+    <div class="day-circle"><span class="day-num">13</span><span class="day-name">Lun</span></div>
+    <div class="day-line"></div>
+    <span class="day-count">2 contenuti</span>
+  </div>
+
+  <!-- 3. Stories follow-up SAx Pub -->
+  <div class="card" data-ch="st ig" data-status="todo" data-tipo="valore" data-id="3">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="channel-badge ch-st">Stories</span>
+      <span class="channel-badge ch-ig">IG</span>
+      <span class="format-tag">📲 Stories</span>
+      <div class="card-title">Follow-up SAx Pub — "Vi avevo detto che vi raccontavo"</div>
+      <span class="tipo-badge tipo-bts">BTS</span>
+      <button class="status-btn status-todo" onclick="cycleStatus(event,this)">⬜ Da fare</button>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sec-label">Nota</div>
+      <div class="hook-box">Da adattare dopo l'incontro dell'11 apr con Debby. Sii onesta — racconta com'è andata davvero, anche se non è andato tutto perfetto. L'autenticità funziona più del perfect pitch.</div>
+
+      <div class="sec-label">Stories — da adattare dopo l'incontro</div>
+      <div class="caption-box">
+        <pre class="caption-text">Slide 1:
+"Sabato ho fatto una cosa un po' matta."
+[testo su sfondo dark]
+
+Slide 2:
+"Sono andata al SAx Pub — un locale storico di Trieste —
+e ho mostrato a Debby (la titolare, e sì, è anche la mia amica)
+come funziona un agente vocale AI."
+[foto del locale se c'è]
+
+Slide 3 (se accordo chiuso ✅):
+"Ha fatto quella faccia.
+Quella faccia quando capisci che stavi perdendo
+chiamate ogni sera e non lo sapevi."
+→ "Stiamo lavorando insieme. 🎙️"
+
+Slide 3 (se ancora in corso ⏳):
+"È andata bene. Ci vuole il suo tempo.
+Come ogni cosa che vale la pena."
+
+Slide 4:
+"Se gestisci un locale e vuoi vedere la stessa demo:
+rispondi qui 👇"</pre>
+        <button class="copy-btn" onclick="copyCaption(this)">Copia</button>
+      </div>
+      <div class="info-row">
+        <div class="pill warn">⚠ Da pubblicare dopo l'incontro dell'11</div>
+        <div class="pill">⏱ <b>10 min</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Reel IG+TK — Educativo problema -->
+  <div class="card" data-ch="ig tk" data-status="todo" data-tipo="valore" data-id="4">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="channel-badge ch-ig">IG</span>
+      <span class="channel-badge ch-tk">TikTok</span>
+      <span class="format-tag">🎬 Reel</span>
+      <div class="card-title">Perdi prenotazioni ogni notte. Non perché sei scarso — perché dormi.</div>
+      <span class="tipo-badge tipo-edu">Educativo</span>
+      <button class="status-btn status-todo" onclick="cycleStatus(event,this)">⬜ Da fare</button>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sec-label">Hook</div>
+      <div class="hook-box">"Il tuo ristorante perde prenotazioni ogni notte. Non perché sei scarso. Perché dormi come tutti gli esseri umani normali."</div>
+
+      <div class="sec-label">Script (40 sec)</div>
+      <div class="script-box">
+        <div class="script-line"><span class="t">[0–4s]</span> "Il tuo ristorante perde prenotazioni ogni notte. Non perché sei scarso. Perché dormi." <span class="note">— pausa, lascia respirare</span></div>
+        <div class="script-line"><span class="t">[4–15s]</span> "Sono le 21.30. Tu sei in cucina. Il telefono squilla. Nessuno risponde. Il cliente appende e chiama il posto accanto."</div>
+        <div class="script-line"><span class="t">[15–28s]</span> "Questo succede ogni sera. Non lo vedi perché non c'è nessuna notifica per le chiamate perse." <span class="note">— testo animato: "chiamata persa × 5 sere × 52 settimane = ?"</span></div>
+        <div class="script-line"><span class="t">[28–40s]</span> "Esiste una soluzione. Si chiama agente vocale AI. Ne parlo spesso qui. Seguimi se non vuoi perderti la parte interessante." <span class="note">— CTA soft, no vendita</span></div>
+      </div>
+
+      <div class="sec-label">Caption</div>
+      <div class="caption-box">
+        <pre class="caption-text">Il tuo ristorante perde prenotazioni ogni notte.
+
+Non perché sei scarso.
+Perché dormi come tutti gli esseri umani normali.
+
+Sono le 21.30.
+Sei in cucina.
+Il telefono squilla.
+Nessuno risponde.
+
+Il cliente chiama il posto accanto.
+
+E tu non lo sai nemmeno.
+
+Esiste una soluzione.
+Ne parlo spesso qui.
+
+Seguimi se non vuoi perderti la parte interessante 👇</pre>
+        <button class="copy-btn" onclick="copyCaption(this)">Copia</button>
+      </div>
+
+      <div class="sec-label">Hashtag IG</div>
+      <div class="ht-row" id="ht4">
+        <span class="ht">#digitalsam</span><span class="ht">#ristoratoriitaliani</span><span class="ht">#gestioneristorante</span><span class="ht">#agentevocaleAI</span><span class="ht">#AIperPMI</span><span class="ht">#automatizzareconAI</span><span class="ht">#foodbusiness</span><span class="ht">#piccoleimprese</span>
+        <button class="ht-copy" onclick="copyHt('ht4')">Copia #</button>
+      </div>
+      <div class="info-row">
+        <div class="pill">⏱ <b>25 min produzione</b></div>
+        <div class="pill">📹 B-roll: <b>stock video cucina / locale da Pexels</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ MAR 14 APR ══ -->
+<div class="day-group">
+  <div class="day-header">
+    <div class="day-circle"><span class="day-num">14</span><span class="day-name">Mar</span></div>
+    <div class="day-line"></div>
+    <span class="day-count">riposo</span>
+  </div>
+  <div class="rest-day">😴 Nessun contenuto programmato.</div>
+</div>
+
+<!-- ══════════════════════════ MER 15 APR ══ -->
+<div class="day-group">
+  <div class="day-header">
+    <div class="day-circle"><span class="day-num">15</span><span class="day-name">Mer</span></div>
+    <div class="day-line"></div>
+    <span class="day-count">2 contenuti</span>
+  </div>
+
+  <!-- 5. Carosello IG — Educativo ironico -->
+  <div class="card" data-ch="ig" data-status="todo" data-tipo="valore" data-id="5">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="channel-badge ch-ig">Instagram</span>
+      <span class="format-tag">🎠 Carosello</span>
+      <div class="card-title">5 cose che l'AI fa già meglio di me (e io ci lavoro tutto il giorno)</div>
+      <span class="tipo-badge tipo-edu">Educativo</span>
+      <button class="status-btn status-todo" onclick="cycleStatus(event,this)">⬜ Da fare</button>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sec-label">Struttura carosello — 7 slide</div>
+      <div class="script-box">
+        <div class="script-line"><span class="t">Cover</span> "5 cose che l'AI fa già meglio di me. E io ci lavoro tutto il giorno." <span class="note">— autoironia come apertura, font bold, sfondo dark</span></div>
+        <div class="script-line"><span class="t">Slide 2</span> <b>Rispondere al telefono.</b> — "Mai in ritardo. Mai di cattivo umore. Mai 'richiamo dopo'. Io invece..."</div>
+        <div class="script-line"><span class="t">Slide 3</span> <b>Ricordare le informazioni.</b> — "Orari, menù, prezzi, disponibilità. L'agente non dimentica mai. Io dimentico dove metto le chiavi."</div>
+        <div class="script-line"><span class="t">Slide 4</span> <b>Lavorare alle 3 di notte.</b> — "Mentre dormi, l'agente risponde. Prenota. Conferma. Senza caffè."</div>
+        <div class="script-line"><span class="t">Slide 5</span> <b>Non perdere la pazienza.</b> — "Domanda ripetuta per la quinta volta? Risponde con la stessa gentilezza. Io invece..."</div>
+        <div class="script-line"><span class="t">Slide 6</span> <b>Scalare senza assumere.</b> — "10 chiamate contemporanee? Nessun problema. Per me sarebbe un attacco di panico."</div>
+        <div class="script-line"><span class="t">Slide 7 (CTA)</span> "Quello che l'AI non fa: decidere per te se usarla o no. Quello tocca a te." <span class="note">— CTA: "Salva questo post. Poi dimmi: qual è la cosa che ti piacerebbe delegare per prima?"</span></div>
+      </div>
+
+      <div class="sec-label">Caption</div>
+      <div class="caption-box">
+        <pre class="caption-text">5 cose che l'AI fa già meglio di me.
+
+(E io ci lavoro tutto il giorno — quindi fidatevi.)
+
+→ Scorri per scoprirle.
+
+Spoiler: nessuna di queste cose richiede di "capire la tecnologia".
+Richiedono solo di smettere di fare tutto da soli.
+
+Salva questo post 🔖
+E dimmi nei commenti: qual è la prima cosa che delegheresti?</pre>
+        <button class="copy-btn" onclick="copyCaption(this)">Copia</button>
+      </div>
+
+      <div class="sec-label">Hashtag IG</div>
+      <div class="ht-row" id="ht5">
+        <span class="ht">#digitalsam</span><span class="ht">#AIitalia</span><span class="ht">#automatizzareconAI</span><span class="ht">#agentevocaleAI</span><span class="ht">#lavorareconlAI</span><span class="ht">#PMIitaliane</span><span class="ht">#intelligenzaartificiale</span>
+        <button class="ht-copy" onclick="copyHt('ht5')">Copia #</button>
+      </div>
+      <div class="info-row">
+        <div class="pill">🎨 Design: <b>Canva — 7 slide, colori brand</b></div>
+        <div class="pill">⏱ <b>45 min Canva + caption</b></div>
+        <div class="pill">💡 Tip: <b>autoironia → salvataggi alle stelle</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Post FB — Educativo / Intrattenimento -->
+  <div class="card" data-ch="fb" data-status="todo" data-tipo="valore" data-id="6">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="channel-badge ch-fb">Facebook</span>
+      <span class="format-tag">📝 Post</span>
+      <div class="card-title">Ho chiamato me stessa alle 22. Ecco com'è andata.</div>
+      <span class="tipo-badge tipo-bts">BTS</span>
+      <button class="status-btn status-todo" onclick="cycleStatus(event,this)">⬜ Da fare</button>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sec-label">Hook</div>
+      <div class="hook-box">"L'altra sera ho chiamato il mio stesso numero di test alle 22. Ha risposto. In modo educato. Con le informazioni giuste. Io ero già sul divano col pigiama."</div>
+
+      <div class="sec-label">Caption Facebook</div>
+      <div class="caption-box">
+        <pre class="caption-text">L'altra sera ho chiamato il mio stesso numero di test alle 22.
+
+Ha risposto.
+In modo educato.
+Con le informazioni giuste.
+
+Io ero già sul divano col pigiama.
+
+È strano testare una cosa che fa quello che faresti tu, ma meglio, e senza lamentarsi.
+
+Ecco cosa ha fatto:
+→ Ha salutato con il nome dell'attività
+→ Ha risposto alla domanda sugli orari
+→ Ha preso nota di una richiesta di prenotazione
+→ Ha salutato e concluso la chiamata
+
+Tutto in meno di 90 secondi.
+
+Non lo dico per fare pubblicità a me stessa.
+Lo dico perché ogni volta che lo testo mi chiedo quante attività in Italia stanno ancora perdendo chiamate di notte.
+
+Probabilmente molte.
+
+Se sei curioso/a di come funziona, scrivi "DEMO" qui sotto.
+Ti mostro la stessa cosa — gratis, senza impegno.</pre>
+        <button class="copy-btn" onclick="copyCaption(this)">Copia</button>
+      </div>
+      <div class="info-row">
+        <div class="pill">🎯 Obiettivo: <b>curiosità + lead organici FB</b></div>
+        <div class="pill">📷 Immagine: <b>screenshot call o avatar DS</b></div>
+        <div class="pill">⏱ <b>15 min</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ GIO 16 APR ══ -->
+<div class="day-group">
+  <div class="day-header">
+    <div class="day-circle"><span class="day-num">16</span><span class="day-name">Gio</span></div>
+    <div class="day-line"></div>
+    <span class="day-count">1 contenuto</span>
+  </div>
+
+  <!-- 7. Reel BTS — Personale / Ironico -->
+  <div class="card" data-ch="ig tk" data-status="todo" data-tipo="valore" data-id="7">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="channel-badge ch-ig">IG</span>
+      <span class="channel-badge ch-tk">TikTok</span>
+      <span class="format-tag">🎬 Reel</span>
+      <div class="card-title">Una giornata di Digital Sam: parto con 3 tab aperti. Finisco con 47.</div>
+      <span class="tipo-badge tipo-per">Personale</span>
+      <button class="status-btn status-todo" onclick="cycleStatus(event,this)">⬜ Da fare</button>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sec-label">Hook</div>
+      <div class="hook-box">"Una giornata di lavoro da Digital Sam. Parto con 3 tab aperti, finisco con 47 e la sensazione di aver fatto tutto e niente."</div>
+
+      <div class="sec-label">Script (50 sec) — ritmo veloce, tono ironico</div>
+      <div class="script-box">
+        <div class="script-line"><span class="t">[0–3s]</span> "Una giornata di Digital Sam. Parto con 3 tab. Finisco con 47." <span class="note">— schermata browser caotica</span></div>
+        <div class="script-line"><span class="t">[3–14s]</span> "Ore 9: apro Claude. Devo scrivere una caption. Finisco per configurare un agente vocale intero." <span class="note">— screen rec veloce</span></div>
+        <div class="script-line"><span class="t">[14–25s]</span> "Ore 11: test della voce clonata. La prima versione suona come un robot degli anni '90. Ricomincio." <span class="note">— audio esagerato in background</span></div>
+        <div class="script-line"><span class="t">[25–38s]</span> "Ore 14: finalmente funziona. L'agente risponde, prenota, saluta. Io faccio un balletto in cucina." <span class="note">— transizione rapida</span></div>
+        <div class="script-line"><span class="t">[38–50s]</span> "Ore 18: chiudo il laptop. 47 tab aperti. 1 cosa completata. Ma quella 1 cosa vale." <span class="note">— CTA: "Seguimi se vuoi vedere come si costruisce questa roba"</span></div>
+      </div>
+
+      <div class="sec-label">Caption</div>
+      <div class="caption-box">
+        <pre class="caption-text">Una giornata di Digital Sam.
+
+Parto con 3 tab aperti.
+Finisco con 47.
+
+Nel mezzo:
+→ una voce clonata che suonava come un robot anni '90
+→ un agente che finalmente risponde come si deve
+→ un balletto in cucina che nessuno ha visto
+
+Non è glamour.
+È il processo.
+
+Seguimi se vuoi vedere come si costruisce questa roba 👀</pre>
+        <button class="copy-btn" onclick="copyCaption(this)">Copia</button>
+      </div>
+
+      <div class="sec-label">Hashtag IG</div>
+      <div class="ht-row" id="ht7">
+        <span class="ht">#digitalsam</span><span class="ht">#dietrolesquinte</span><span class="ht">#lavorareconlAI</span><span class="ht">#AIitalia</span><span class="ht">#agentevocaleAI</span><span class="ht">#solopreneur</span><span class="ht">#automazione</span>
+        <button class="ht-copy" onclick="copyHt('ht7')">Copia #</button>
+      </div>
+      <div class="info-row">
+        <div class="pill">📹 B-roll: <b>screen recording + facecam (spontaneo)</b></div>
+        <div class="pill">⏱ <b>30 min</b></div>
+        <div class="pill">💡 Tip: <b>più è spontaneo, meglio funziona</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ VEN 17 APR ══ -->
+<div class="day-group">
+  <div class="day-header">
+    <div class="day-circle"><span class="day-num">17</span><span class="day-name">Ven</span></div>
+    <div class="day-line"></div>
+    <span class="day-count">2 contenuti</span>
+  </div>
+
+  <!-- 8. Reel IG+TK — Educativo / mito da sfatare -->
+  <div class="card" data-ch="ig tk" data-status="todo" data-tipo="valore" data-id="8">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="channel-badge ch-ig">IG</span>
+      <span class="channel-badge ch-tk">TikTok</span>
+      <span class="format-tag">🎬 Reel</span>
+      <div class="card-title">"Ma i miei clienti preferiscono parlare con una persona." Okay. Alle 23 con chi parlano?</div>
+      <span class="tipo-badge tipo-edu">Educativo</span>
+      <button class="status-btn status-todo" onclick="cycleStatus(event,this)">⬜ Da fare</button>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sec-label">Hook</div>
+      <div class="hook-box">"'I miei clienti preferiscono parlare con una persona vera.' Okay. Alle 23 con chi parlano?"</div>
+
+      <div class="sec-label">Script (40 sec) — sfata il mito più comune</div>
+      <div class="script-box">
+        <div class="script-line"><span class="t">[0–4s]</span> "'I miei clienti preferiscono parlare con una persona vera.'" <span class="note">— tono che imita la frase</span></div>
+        <div class="script-line"><span class="t">[4–10s]</span> "Okay. Sono d'accordo. Le persone vere sono meglio." <span class="note">— pausa</span></div>
+        <div class="script-line"><span class="t">[10–20s]</span> "Ma le persone vere dormono. Mangiano. Hanno giornate storte. Non sono disponibili H24."</div>
+        <div class="script-line"><span class="t">[20–32s]</span> "Un agente vocale non sostituisce te. Copre il vuoto quando tu non ci sei. È come avere qualcuno che risponde mentre sei impegnato — senza pagare stipendi."</div>
+        <div class="script-line"><span class="t">[32–40s]</span> "Il mito è sfatato. Prego." <span class="note">— CTA: "Salva se ti è utile. Commenta la tua obiezione preferita 👇"</span></div>
+      </div>
+
+      <div class="sec-label">Caption</div>
+      <div class="caption-box">
+        <pre class="caption-text">"I miei clienti preferiscono parlare con una persona vera."
+
+Okay. Sono d'accordo.
+
+Alle 23 con chi parlano?
+
+Un agente vocale non ti sostituisce.
+Copre il vuoto quando tu non ci sei.
+
+Come avere qualcuno che risponde sempre —
+senza stipendio, senza ferie, senza giornate storte.
+
+Commenta la tua obiezione preferita sull'AI 👇
+Le smonto tutte, una per una.</pre>
+        <button class="copy-btn" onclick="copyCaption(this)">Copia</button>
+      </div>
+
+      <div class="sec-label">Hashtag IG</div>
+      <div class="ht-row" id="ht8">
+        <span class="ht">#digitalsam</span><span class="ht">#agentevocaleAI</span><span class="ht">#AIitalia</span><span class="ht">#mitiAI</span><span class="ht">#automatizzareconAI</span><span class="ht">#PMIitaliane</span><span class="ht">#intelligenzaartificiale</span>
+        <button class="ht-copy" onclick="copyHt('ht8')">Copia #</button>
+      </div>
+      <div class="info-row">
+        <div class="pill">⏱ <b>20 min</b></div>
+        <div class="pill">💡 Tip: <b>i commenti con obiezioni = contenuto futuro gratis</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. LinkedIn — UNICO POST COMMERCIALE della settimana -->
+  <div class="card" data-ch="li" data-status="todo" data-tipo="vendita" data-id="9">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="channel-badge ch-li">LinkedIn</span>
+      <span class="format-tag">📝 Post</span>
+      <div class="card-title">Sto cercando 3 attività a Trieste che vogliano testare l'agente vocale AI. Gratis.</div>
+      <span class="tipo-badge tipo-ven">Vendita (1/9)</span>
+      <button class="status-btn status-todo" onclick="cycleStatus(event,this)">⬜ Da fare</button>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sec-label">Nota strategica</div>
+      <div class="hook-box">Questo è l'unico contenuto commerciale della settimana. Su LinkedIn funziona perché è diretto e onesto — non stai vendendo, stai cercando beta tester. Zero pressione percepita, massima risposta.</div>
+
+      <div class="sec-label">Caption LinkedIn</div>
+      <div class="caption-box">
+        <pre class="caption-text">Sto cercando 3 attività a Trieste disposte a testare un agente vocale AI.
+
+Gratis. Nessun impegno. Nessuna carta di credito.
+
+In cambio chiedo solo un feedback onesto su com'è andata.
+
+Cosa ottieni:
+→ Un agente vocale configurato sulla tua attività
+→ Risponde alle chiamate fuori orario
+→ Gestisce prenotazioni e domande frequenti
+→ Test di 2 settimane
+
+A chi è rivolto:
+Ristoranti, studi medici, studi legali, negozi, artigiani.
+Qualunque attività che riceve chiamate e non può sempre rispondere.
+
+Perché lo faccio gratis?
+Perché ho bisogno di casi reali da Trieste.
+Semplice.
+
+Se ti interessa o conosci qualcuno che potrebbe esserlo:
+Scrivimi in privato o commenta qui sotto.
+
+—
+Samantha Del Vecchio | Digital Sam
+Siti web + Agenti Vocali AI · digitalsam.it</pre>
+        <button class="copy-btn" onclick="copyCaption(this)">Copia</button>
+      </div>
+      <div class="info-row">
+        <div class="pill warn">⚡ 1 post commerciale su 9 = regola 80/20 rispettata</div>
+        <div class="pill">⏱ <b>15 min</b></div>
+        <div class="pill">🎯 <b>Beta tester Trieste → case study → clienti paganti</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="empty-state" id="empty-state">
+  <h3>Nessun contenuto trovato</h3>
+  <p>Prova a cambiare i filtri</p>
+</div>
+
+</div>
+
+<div class="footer-note">
+  Digital Sam · Piano 11–17 Apr 2026 · 9 contenuti · <b style="color:var(--cyan)">8 valore</b> + <b style="color:var(--gold)">1 vendita</b> = 89% / 11% (meglio dell'80/20 😎)
+</div>
+
+<script>
+const KEY = 'ds-piano-apr11';
+let saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+const CYCLE = ['todo','wip','done'];
+const LABELS = {todo:'⬜ Da fare', wip:'🔄 In lavorazione', done:'✅ Pubblicato'};
+const CLS    = {todo:'status-todo', wip:'status-wip', done:'status-done'};
+
+// Ripristina stati
+document.querySelectorAll('.card').forEach(c => {
+  const id = c.dataset.id;
+  if (saved[id]) {
+    c.dataset.status = saved[id];
+    const b = c.querySelector('.status-btn');
+    b.className = 'status-btn ' + CLS[saved[id]];
+    b.textContent = LABELS[saved[id]];
+  }
+});
+
+function toggleCard(h) {
+  const body = h.nextElementSibling;
+  const icon = h.querySelector('.expand-icon');
+  const open = body.classList.toggle('open');
+  icon.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function cycleStatus(e, btn) {
+  e.stopPropagation();
+  const card = btn.closest('.card');
+  const id = card.dataset.id;
+  const cur = card.dataset.status;
+  const nxt = CYCLE[(CYCLE.indexOf(cur)+1) % CYCLE.length];
+  card.dataset.status = nxt;
+  btn.className = 'status-btn ' + CLS[nxt];
+  btn.textContent = LABELS[nxt];
+  saved[id] = nxt;
+  localStorage.setItem(KEY, JSON.stringify(saved));
+  applyFilters();
+  updateStats();
+}
+
+function copyCaption(btn) {
+  const pre = btn.previousElementSibling;
+  navigator.clipboard.writeText(pre.textContent.trim()).then(() => {
+    btn.textContent = '✓ Copiato'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='Copia'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyHt(id) {
+  const row = document.getElementById(id);
+  const txt = Array.from(row.querySelectorAll('.ht')).map(t=>t.textContent).join(' ');
+  navigator.clipboard.writeText(txt).then(() => {
+    const b = row.querySelector('.ht-copy');
+    b.textContent='✓ Copiati'; b.classList.add('copied');
+    setTimeout(()=>{ b.textContent='Copia #'; b.classList.remove('copied'); }, 2000);
+  });
+}
+
+// FILTRI
+let fCh='all', fSt='all', fTp='all';
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const f = btn.dataset.f;
+    const grpId = f==='ch'?'fg-ch': f==='st'?'fg-st':'fg-tp';
+    document.querySelectorAll('#'+grpId+' .filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    if(f==='ch') fCh=btn.dataset.v;
+    else if(f==='st') fSt=btn.dataset.v;
+    else fTp=btn.dataset.v;
+    applyFilters();
+  });
+});
+
+function applyFilters() {
+  let vis=0;
+  document.querySelectorAll('.card').forEach(c=>{
+    const chs = c.dataset.ch.split(' ');
+    const okCh = fCh==='all' || chs.includes(fCh);
+    const okSt = fSt==='all' || c.dataset.status===fSt;
+    const okTp = fTp==='all' || c.dataset.tipo===fTp;
+    const show = okCh && okSt && okTp;
+    c.classList.toggle('hidden', !show);
+    if(show) vis++;
+  });
+  document.getElementById('empty-state').classList.toggle('visible', vis===0);
+  updateStats();
+}
+
+function updateStats() {
+  const all = document.querySelectorAll('.card');
+  let cnt={todo:0,wip:0,done:0,valore:0,vendita:0};
+  all.forEach(c=>{
+    cnt[c.dataset.status]++;
+    cnt[c.dataset.tipo]++;
+  });
+  document.getElementById('c-todo').textContent = cnt.todo;
+  document.getElementById('c-wip').textContent  = cnt.wip;
+  document.getElementById('c-done').textContent = cnt.done;
+  document.getElementById('cnt-valore').textContent = cnt.valore;
+  document.getElementById('cnt-vendita').textContent = cnt.vendita;
+  const pct = Math.round(cnt.valore / all.length * 100);
+  document.getElementById('ratio-fill').style.background =
+    `linear-gradient(90deg, var(--cyan) 0%, var(--cyan) ${pct}%, var(--gold) ${pct}%)`;
+}
+
+updateStats();
+</script>
+</body>
+</html>

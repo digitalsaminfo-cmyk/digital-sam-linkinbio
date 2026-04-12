@@ -6,6 +6,18 @@ desktop.ini
 # Sessioni e note private
 sessioni/
 
+# File media binari (video, audio, immagini — usa Google Drive / cloud)
+*.mp4
+*.mp3
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+
+# Cartella .claude (settings e memoria locale)
+.claude/
+
 # Dati clienti sensibili
 clienti/
 

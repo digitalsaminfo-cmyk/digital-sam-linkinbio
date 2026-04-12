@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produzione Settimana 13–20 Apr — Digital Sam</title>
+<style>
+  :root {
+    --cyan: #4DD9F0; --gold: #F5A623; --dark: #07101E;
+    --dark2: #0D1F35; --dark3: #132840; --text: #E8F4FF;
+    --muted: #7A9BB5; --green: #2ECC71; --red: #E74C3C;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--dark); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; padding-bottom: 80px; }
+
+  /* HEADER */
+  .header { background: var(--dark2); border-bottom: 2px solid var(--cyan); padding: 20px 28px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(77,217,240,0.1); }
+  .header-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .dot { width: 9px; height: 9px; background: var(--cyan); border-radius: 50%; animation: pulse 2s infinite; box-shadow: 0 0 8px var(--cyan); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  h1 { font-size: 1.15rem; font-weight: 700; color: var(--cyan); }
+  h1 span { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
+
+  /* PROGRESS BAR */
+  .progress-wrap { margin-top: 14px; }
+  .progress-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-track { height: 6px; background: rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--gold)); border-radius: 10px; transition: width .4s; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 0; background: var(--dark2); border-bottom: 1px solid rgba(77,217,240,0.12); padding: 0 28px; overflow-x: auto; }
+  .tab { padding: 14px 20px; font-size: 0.82rem; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all .2s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+  .tab .done-badge { display: inline-block; background: var(--green); color: var(--dark); font-size: 0.6rem; font-weight: 800; padding: 1px 5px; border-radius: 8px; margin-left: 6px; vertical-align: middle; }
+
+  /* CONTENT */
+  .content { padding: 28px; max-width: 960px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* CONTENT CARD */
+  .card { background: var(--dark2); border: 1px solid rgba(77,217,240,0.1); border-radius: 16px; margin-bottom: 20px; overflow: hidden; }
+  .card-head { padding: 16px 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .day-chip { background: var(--dark3); border: 1px solid rgba(77,217,240,0.2); border-radius: 8px; padding: 4px 10px; font-size: 0.72rem; font-weight: 700; color: var(--cyan); white-space: nowrap; }
+  .format-chip { background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.2); border-radius: 8px; padding: 4px 10px; font-size: 0.72rem; color: var(--gold); white-space: nowrap; }
+  .ch-ig { background: rgba(225,48,108,.12); color: #E1306C; border: 1px solid rgba(225,48,108,.25); border-radius: 8px; padding: 3px 8px; font-size: 0.68rem; font-weight: 700; }
+  .ch-tk { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.15); border-radius: 8px; padding: 3px 8px; font-size: 0.68rem; font-weight: 700; }
+  .ch-fb { background: rgba(24,119,242,.12); color: #1877F2; border: 1px solid rgba(24,119,242,.25); border-radius: 8px; padding: 3px 8px; font-size: 0.68rem; font-weight: 700; }
+  .ch-li { background: rgba(0,119,181,.12); color: #0077B5; border: 1px solid rgba(0,119,181,.25); border-radius: 8px; padding: 3px 8px; font-size: 0.68rem; font-weight: 700; }
+  .ch-st { background: rgba(77,217,240,.08); color: var(--cyan); border: 1px solid rgba(77,217,240,.25); border-radius: 8px; padding: 3px 8px; font-size: 0.68rem; font-weight: 700; }
+  .card-title { flex: 1; font-size: 0.95rem; font-weight: 600; min-width: 160px; }
+  .pub-time { font-size: 0.72rem; color: var(--muted); margin-left: auto; white-space: nowrap; }
+
+  /* SECTIONS */
+  .card-body { padding: 0 20px 20px; }
+  .sec { margin-top: 16px; }
+  .sec-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
+
+  /* COPY BOX */
+  .copy-box { position: relative; background: var(--dark3); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 50px 14px 16px; }
+  .copy-text { font-size: 0.83rem; line-height: 1.75; white-space: pre-wrap; color: var(--text); }
+  .copy-btn { position: absolute; top: 10px; right: 10px; background: var(--dark); border: 1px solid rgba(77,217,240,.3); color: var(--cyan); padding: 5px 10px; border-radius: 8px; font-size: 0.68rem; cursor: pointer; font-family: inherit; transition: all .2s; white-space: nowrap; }
+  .copy-btn:hover { background: rgba(77,217,240,.08); }
+  .copy-btn.ok { color: var(--green); border-color: var(--green); }
+
+  /* CHECKLIST */
+  .checklist { display: flex; flex-direction: column; gap: 8px; }
+  .check-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 14px; background: var(--dark3); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: all .2s; user-select: none; }
+  .check-item:hover { border-color: rgba(77,217,240,0.2); }
+  .check-item.done { background: rgba(46,204,113,0.06); border-color: rgba(46,204,113,0.2); }
+  .check-item.done .check-label { color: var(--muted); text-decoration: line-through; }
+  .check-box { width: 18px; height: 18px; border: 2px solid var(--muted); border-radius: 5px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all .2s; font-size: 0.7rem; }
+  .check-item.done .check-box { background: var(--green); border-color: var(--green); color: white; }
+  .check-label { font-size: 0.83rem; line-height: 1.5; color: var(--text); }
+  .check-sub { font-size: 0.74rem; color: var(--muted); margin-top: 2px; display: block; }
+
+  /* OVERLAY TABLE */
+  .ov-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  .ov-table th { text-align: left; padding: 8px 10px; background: var(--dark3); color: var(--muted); font-size: 0.68rem; text-transform: uppercase; letter-spacing: .5px; }
+  .ov-table td { padding: 8px 10px; border-top: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
+  .ov-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .timing { color: var(--gold); font-weight: 600; white-space: nowrap; }
+  .pos { color: var(--muted); font-size: 0.75rem; }
+
+  /* SCRIPT */
+  .script-block { background: var(--dark3); border-radius: 10px; padding: 14px 16px; }
+  .sb { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .sb:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .sb-time { color: var(--gold); font-size: 0.72rem; font-weight: 700; margin-bottom: 3px; }
+  .sb-text { font-size: 0.85rem; line-height: 1.6; }
+  .sb-regia { color: var(--muted); font-size: 0.75rem; font-style: italic; margin-top: 4px; padding-left: 10px; border-left: 2px solid rgba(77,217,240,0.3); }
+
+  /* HASHTAG ROW */
+  .ht-row { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+  .ht { font-size: 0.73rem; color: var(--muted); background: rgba(255,255,255,.04); padding: 3px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,.07); }
+  .ht-btn { background: var(--dark); border: 1px solid rgba(77,217,240,.25); color: var(--cyan); padding: 4px 10px; border-radius: 8px; font-size: 0.68rem; cursor: pointer; font-family: inherit; transition: all .2s; }
+  .ht-btn:hover { background: rgba(77,217,240,.08); }
+  .ht-btn.ok { color: var(--green); border-color: var(--green); }
+
+  /* SCHED PILL */
+  .sched { display: inline-flex; align-items: center; gap: 6px; background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.2); border-radius: 8px; padding: 5px 12px; font-size: 0.76rem; color: var(--gold); margin-top: 4px; }
+
+  /* EMPTY */
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty-state h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--text); }
+
+  @media(max-width:600px){ .content{padding:16px;} .tabs{padding:0 12px;} .header{padding:14px 16px;} }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-row">
+    <div class="logo">
+      <div class="dot"></div>
+      <h1>Digital Sam <span>— Produzione 13–20 Aprile 2026</span></h1>
+    </div>
+    <div style="font-size:.78rem;color:var(--muted)">5 contenuti · 3 reel · 1 carosello · 1 LinkedIn</div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Completamento settimana</span>
+      <span id="pct-label">0%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="reel1" onclick="switchTab(this,'reel1')">Lun 13 · Reel <span id="badge-reel1"></span></div>
+  <div class="tab" data-tab="caros" onclick="switchTab(this,'caros')">Mar 15 · Carosello <span id="badge-caros"></span></div>
+  <div class="tab" data-tab="reel2" onclick="switchTab(this,'reel2')">Gio 16 · Reel BTS <span id="badge-reel2"></span></div>
+  <div class="tab" data-tab="reel3" onclick="switchTab(this,'reel3')">Ven 17 · Reel + LI <span id="badge-reel3"></span></div>
+  <div class="tab" data-tab="sched" onclick="switchTab(this,'sched')">📅 Programmazione</div>
+</div>
+
+<div class="content">
+
+<!-- ═══════════════ REEL 1 ═══════════════ -->
+<div class="panel active" id="panel-reel1">
+
+  <div class="card">
+    <div class="card-head">
+      <div class="day-chip">Lun 13 Apr</div>
+      <div class="format-chip">🎬 Reel 45s</div>
+      <span class="ch-ig">IG</span><span class="ch-tk">TK</span><span class="ch-fb">FB</span>
+      <div class="card-title">"Perdi prenotazioni di notte. Non perché sei scarso — perché dormi."</div>
+      <div class="sched">🕕 18:00 IG · 18:30 TK</div>
+    </div>
+
+    <div class="card-body">
+      <!-- PRODUZIONE -->
+      <div class="sec">
+        <div class="sec-label">✅ Checklist Produzione</div>
+        <div class="checklist" id="cl-reel1">
+          <div class="check-item" onclick="toggle(this,'reel1')">
+            <div class="check-box"></div>
+            <div><div class="check-label">ElevenLabs — genera voiceover</div><span class="check-sub">Incolla script qui sotto → ID voce: fuV4xHAAY7dyyOccgyL0 → scarica MP3</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel1')">
+            <div class="check-box"></div>
+            <div><div class="check-label">HeyGen — genera avatar video</div><span class="check-sub">Carica MP3 → scegli avatar → formato 9:16 → genera (15–20 min)</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel1')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Pexels — scarica B-roll</div><span class="check-sub">Cerca: "restaurant kitchen night busy" → scarica clip 1080p</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel1')">
+            <div class="check-box"></div>
+            <div><div class="check-label">CapCut — monta il reel</div><span class="check-sub">Sfondo gradiente → overlay avatar (box basso) → overlay b-roll (box alto) → testi → audio → export 1080x1920 MP4</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel1')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Caption + hashtag pronti</div><span class="check-sub">Copia da sezione qui sotto</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCRIPT -->
+      <div class="sec">
+        <div class="sec-label">🎙 Script (da incollare in ElevenLabs)</div>
+        <div class="copy-box">
+          <pre class="copy-text">Il tuo ristorante perde prenotazioni ogni notte.
+
+Non perché sei scarso. Perché dormi. Come tutti gli esseri umani normali.
+
+Sono le 21.30. Sei in cucina. Il telefono squilla. Nessuno risponde. Quel cliente non aspetta — chiama il posto accanto.
+
+Un agente vocale AI risponde al posto tuo. Conosce il menù, gli orari, prende la prenotazione. H24. Anche quando dormi.
+
+Seguimi se non vuoi perderti la parte interessante.</pre>
+          <button class="copy-btn" onclick="cp(this)">Copia</button>
+        </div>
+      </div>
+
+      <!-- OVERLAY -->
+      <div class="sec">
+        <div class="sec-label">📝 Testi Overlay CapCut</div>
+        <table class="ov-table">
+          <tr><th>#</th><th>Testo</th><th>Timing</th><th>Posizione</th><th>Stile</th></tr>
+          <tr><td>1</td><td><b>lo sai?</b></td><td class="timing">0–4s</td><td class="pos">centro-bassa</td><td class="pos">Bold nero, sfondo bianco arrotondato, dim 52</td></tr>
+          <tr><td>2</td><td><b>come tutti.</b></td><td class="timing">4–10s</td><td class="pos">tra i due box</td><td class="pos">Bold bianco, nessuno sfondo, dim 48</td></tr>
+          <tr><td>3</td><td><b>×1 / ×2 / ×3</b></td><td class="timing">18s / 21s / 24s</td><td class="pos">centro-alta</td><td class="pos">Cyan #4DD9F0, bold, dim 60 — appare in sequenza</td></tr>
+          <tr><td>4</td><td><b>risponde lui.</b></td><td class="timing">28–42s</td><td class="pos">tra i due box</td><td class="pos">Bold nero, sfondo bianco arrotondato, dim 52</td></tr>
+          <tr><td>5</td><td><b>@digitalsam_it</b></td><td class="timing">44–47s</td><td class="pos">centro-bassa</td><td class="pos">Cyan, dim 30</td></tr>
+        </table>
+      </div>
+
+      <!-- CAPTION IG -->
+      <div class="sec">
+        <div class="sec-label">📲 Caption Instagram</div>
+        <div class="copy-box">
+          <pre class="copy-text">Il tuo ristorante perde prenotazioni ogni notte.
+
+Non perché sei scarso.
+Perché dormi — come tutti gli esseri umani normali.
+
+Sono le 21.30, sei in cucina, il telefono squilla.
+Nessuno risponde.
+Quel cliente chiama il posto accanto.
+
+Esiste una soluzione.
+Ne parlo spesso qui — seguimi 👇</pre>
+          <button class="copy-btn" onclick="cp(this)">Copia</button>
+        </div>
+      </div>
+
+      <!-- HASHTAG -->
+      <div class="sec">
+        <div class="sec-label">🏷 Hashtag Instagram</div>
+        <div class="ht-row" id="ht-reel1">
+          <span class="ht">#digitalsam</span><span class="ht">#agentevocaleAI</span><span class="ht">#AIperPMI</span><span class="ht">#ristoratoriitaliani</span><span class="ht">#gestioneristorante</span><span class="ht">#automatizzareconAI</span><span class="ht">#foodbusiness</span><span class="ht">#intelligenzaartificiale</span><span class="ht">#PMIitaliane</span>
+          <button class="ht-btn" onclick="cpHt('ht-reel1',this)">Copia tutti #</button>
+        </div>
+      </div>
+
+      <!-- CAPTION TK -->
+      <div class="sec">
+        <div class="sec-label">🎵 Caption TikTok</div>
+        <div class="copy-box">
+          <pre class="copy-text">Perdi prenotazioni ogni notte. Non perché sei scarso — perché dormi 😅
+La soluzione esiste. Ne parlo qui.
+
+#digitalsam #AIitalia #agentevocale #ristoratori</pre>
+          <button class="copy-btn" onclick="cp(this)">Copia</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /panel reel1 -->
+
+<!-- ═══════════════ CAROSELLO ═══════════════ -->
+<div class="panel" id="panel-caros">
+
+  <div class="card">
+    <div class="card-head">
+      <div class="day-chip">Mar 15 Apr</div>
+      <div class="format-chip">🎠 Carosello 7 slide</div>
+      <span class="ch-ig">IG</span><span class="ch-fb">FB</span>
+      <div class="card-title">"5 cose che l'AI fa già meglio di me (e io ci lavoro tutto il giorno)"</div>
+      <div class="sched">🕛 12:00 IG · FB cross-post</div>
+    </div>
+
+    <div class="card-body">
+      <div class="sec">
+        <div class="sec-label">✅ Checklist Produzione</div>
+        <div class="checklist" id="cl-caros">
+          <div class="check-item" onclick="toggle(this,'caros')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Canva — apri nuovo design 1080x1350</div><span class="check-sub">Formato verticale (più reach del quadrato)</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'caros')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Crea le 7 slide con i testi qui sotto</div><span class="check-sub">Sfondo #07101E · font bold bianco · accent cyan #4DD9F0 per numeri · logo DS ultima slide</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'caros')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Esporta come PNG separati</div><span class="check-sub">File → Scarica → PNG → "Pagine separate" → 7 file</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'caros')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Caption + hashtag pronti</div><span class="check-sub">Copia da sezione qui sotto</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TESTI SLIDE -->
+      <div class="sec">
+        <div class="sec-label">🖼 Testi per le 7 Slide (copia e incolla in Canva)</div>
+
+        <div class="script-block">
+          <div class="sb">
+            <div class="sb-time">SLIDE 1 — COVER</div>
+            <div class="sb-text"><b>"5 cose che l'AI fa già meglio di me."</b><br><br>(e io ci lavoro tutto il giorno)</div>
+            <div class="sb-regia">Font grande bold · in basso a destra piccolo: "scorri →" · avatar DS in angolo opzionale</div>
+          </div>
+          <div class="sb">
+            <div class="sb-time">SLIDE 2</div>
+            <div class="sb-text"><b>Rispondere al telefono.</b><br><br>Mai in ritardo.<br>Mai di cattivo umore.<br>Mai "aspetti che controllo".<br><br>Io invece ho risposto "mmh" a una chiamata alle 8 di mattina.</div>
+          </div>
+          <div class="sb">
+            <div class="sb-time">SLIDE 3</div>
+            <div class="sb-text"><b>Ricordare tutto.</b><br><br>Orari. Menù. Prezzi. Disponibilità.<br><br>L'agente non dimentica mai niente.<br>Io dimentico dove metto le chiavi ogni giorno da 34 anni.</div>
+          </div>
+          <div class="sb">
+            <div class="sb-time">SLIDE 4</div>
+            <div class="sb-text"><b>Lavorare alle 3 di notte.</b><br><br>Risponde. Prenota. Conferma.<br>Senza caffè. Senza lamentarsi.<br><br>Mentre tu dormi — lui lavora.</div>
+          </div>
+          <div class="sb">
+            <div class="sb-time">SLIDE 5</div>
+            <div class="sb-text"><b>Non perdere la pazienza.</b><br><br>La stessa domanda per la quinta volta?<br>Risponde con la stessa gentilezza.<br><br>Io arrivo alla terza e già si sente nel tono.</div>
+          </div>
+          <div class="sb">
+            <div class="sb-time">SLIDE 6</div>
+            <div class="sb-text"><b>Scalare senza assumere.</b><br><br>10 chiamate in contemporanea? Nessun problema.<br><br>Per me sarebbe un attacco di panico certificato.</div>
+          </div>
+          <div class="sb">
+            <div class="sb-time">SLIDE 7 — CTA</div>
+            <div class="sb-text"><b>Quello che l'AI non fa:</b><br>decidere per te se usarla o no.<br><br>Quello tocca a te.<br><br><em>Salva questo post 🔖<br>Dimmi nei commenti: cosa delegheresti per prima?</em></div>
+            <div class="sb-regia">Aggiungi: @digitalsam_it · digitalsam.it</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPTION -->
+      <div class="sec">
+        <div class="sec-label">📲 Caption Instagram</div>
+        <div class="copy-box">
+          <pre class="copy-text">5 cose che l'AI fa già meglio di me.
+
+(E io ci lavoro tutto il giorno — quindi fidatevi.)
+
+→ Scorri per scoprirle.
+
+Spoiler: nessuna richiede di "capire la tecnologia".
+Richiede solo di smettere di fare tutto da soli.
+
+Salva questo post 🔖
+Dimmi nei commenti: qual è la prima cosa che delegheresti?</pre>
+          <button class="copy-btn" onclick="cp(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">🏷 Hashtag Instagram</div>
+        <div class="ht-row" id="ht-caros">
+          <span class="ht">#digitalsam</span><span class="ht">#AIitalia</span><span class="ht">#automatizzareconAI</span><span class="ht">#agentevocaleAI</span><span class="ht">#lavorareconlAI</span><span class="ht">#PMIitaliane</span><span class="ht">#intelligenzaartificiale</span><span class="ht">#AIperPMI</span><span class="ht">#solopreneur</span>
+          <button class="ht-btn" onclick="cpHt('ht-caros',this)">Copia tutti #</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /panel caros -->
+
+<!-- ═══════════════ REEL 2 ═══════════════ -->
+<div class="panel" id="panel-reel2">
+
+  <div class="card">
+    <div class="card-head">
+      <div class="day-chip">Gio 16 Apr</div>
+      <div class="format-chip">🎬 Reel BTS 48s</div>
+      <span class="ch-ig">IG</span><span class="ch-tk">TK</span><span class="ch-fb">FB</span>
+      <div class="card-title">"Una giornata di Digital Sam: parto con 3 tab. Finisco con 47."</div>
+      <div class="sched">🕕 18:00 IG · 18:30 TK</div>
+    </div>
+    <div class="card-body">
+
+      <div class="sec">
+        <div class="sec-label">✅ Checklist Produzione</div>
+        <div class="checklist" id="cl-reel2">
+          <div class="check-item" onclick="toggle(this,'reel2')">
+            <div class="check-box"></div>
+            <div><div class="check-label">ElevenLabs — genera voiceover</div><span class="check-sub">ID voce: fuV4xHAAY7dyyOccgyL0 → scarica MP3</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel2')">
+            <div class="check-box"></div>
+            <div><div class="check-label">HeyGen — genera avatar video 9:16</div><span class="check-sub">Carica MP3 → genera (15–20 min)</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel2')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Screen recording del tuo laptop</div><span class="check-sub">Registra: browser con tanti tab → Claude → ElevenLabs → demo digitalsam.it (4 clip separate)</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel2')">
+            <div class="check-box"></div>
+            <div><div class="check-label">CapCut — monta il reel</div><span class="check-sub">Sfondo dark #07101E→#0D1F35 → avatar (box basso) → screen rec (box alto, 4 clip in sequenza) → testi → export MP4</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel2')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Caption + hashtag pronti</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">🎙 Script (da incollare in ElevenLabs)</div>
+        <div class="copy-box">
+          <pre class="copy-text">Una giornata di Digital Sam. Parto con 3 tab aperti. Finisco con 47.
+
+Ore 9: apro Claude. Devo scrivere una caption. Finisco per configurare un agente vocale intero.
+
+Ore 11: test della voce. La prima versione suona come un robot anni '90. Ricomincio.
+
+Ore 14: funziona. L'agente risponde, prenota, saluta. Faccio un balletto in cucina.
+
+Ore 18: chiudo il laptop. 47 tab. 1 cosa completata. Ma quella 1 cosa vale.</pre>
+          <button class="copy-btn" onclick="cp(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">📝 Testi Overlay CapCut</div>
+        <table class="ov-table">
+          <tr><th>#</th><th>Testo</th><th>Timing</th><th>Posizione</th><th>Stile</th></tr>
+          <tr><td>1</td><td><b>normale.</b></td><td class="timing">0–3s</td><td class="pos">centro-bassa</td><td class="pos">Bold nero, sfondo bianco, dim 52</td></tr>
+          <tr><td>2</td><td><b>era solo una caption.</b></td><td class="timing">3–12s</td><td class="pos">tra i due box</td><td class="pos">Bold bianco, nessuno sfondo, dim 40</td></tr>
+          <tr><td>3</td><td><b>prova 1 di 7.</b></td><td class="timing">14–22s</td><td class="pos">tra i due box</td><td class="pos">Gold #F5A623, bold, dim 44</td></tr>
+          <tr><td>4</td><td><b>finalmente.</b></td><td class="timing">27–35s</td><td class="pos">centro</td><td class="pos">Bold nero, sfondo bianco, dim 56</td></tr>
+          <tr><td>5</td><td><b>seguimi 👀</b></td><td class="timing">40–48s</td><td class="pos">centro-bassa</td><td class="pos">Cyan #4DD9F0, bold, dim 48</td></tr>
+        </table>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">📲 Caption Instagram</div>
+        <div class="copy-box">
+          <pre class="copy-text">Una giornata di Digital Sam.
+
+Parto con 3 tab aperti.
+Finisco con 47.
+
+Nel mezzo:
+→ una voce che suonava come un robot anni '90
+→ un agente che finalmente risponde come si deve
+→ un balletto in cucina che nessuno ha visto
+
+Non è glamour.
+È il processo.
+
+Seguimi se vuoi vedere come si costruisce questa roba 👀</pre>
+          <button class="copy-btn" onclick="cp(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">🏷 Hashtag Instagram</div>
+        <div class="ht-row" id="ht-reel2">
+          <span class="ht">#digitalsam</span><span class="ht">#dietrolesquinte</span><span class="ht">#lavorareconlAI</span><span class="ht">#AIitalia</span><span class="ht">#agentevocaleAI</span><span class="ht">#solopreneur</span><span class="ht">#automazione</span><span class="ht">#ElevenLabs</span>
+          <button class="ht-btn" onclick="cpHt('ht-reel2',this)">Copia tutti #</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">🎵 Caption TikTok</div>
+        <div class="copy-box">
+          <pre class="copy-text">3 tab aperti → 47 tab → 1 cosa fatta. Giornata tipo 😅
+#digitalsam #AIitalia #solopreneur #dietrolesquinte</pre>
+          <button class="copy-btn" onclick="cp(this)">Copia</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /panel reel2 -->
+
+<!-- ═══════════════ REEL 3 + LINKEDIN ═══════════════ -->
+<div class="panel" id="panel-reel3">
+
+  <!-- REEL 3 -->
+  <div class="card">
+    <div class="card-head">
+      <div class="day-chip">Ven 17 Apr</div>
+      <div class="format-chip">🎬 Reel 45s</div>
+      <span class="ch-ig">IG</span><span class="ch-tk">TK</span><span class="ch-fb">FB</span>
+      <div class="card-title">"I clienti preferiscono una persona. Okay. Alle 23 con chi parlano?"</div>
+      <div class="sched">🕛 12:00 IG · 12:30 TK</div>
+    </div>
+    <div class="card-body">
+
+      <div class="sec">
+        <div class="sec-label">✅ Checklist Produzione</div>
+        <div class="checklist" id="cl-reel3">
+          <div class="check-item" onclick="toggle(this,'reel3')">
+            <div class="check-box"></div>
+            <div><div class="check-label">ElevenLabs — genera voiceover</div><span class="check-sub">ID voce: fuV4xHAAY7dyyOccgyL0 → scarica MP3</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel3')">
+            <div class="check-box"></div>
+            <div><div class="check-label">HeyGen — genera avatar video 9:16</div><span class="check-sub">Carica MP3 → genera (15–20 min)</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel3')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Pexels — B-roll</div><span class="check-sub">Cerca: "person sleeping night" + screen rec demo digitalsam.it</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel3')">
+            <div class="check-box"></div>
+            <div><div class="check-label">CapCut — monta il reel</div><span class="check-sub">3 clip in sequenza nel box alto: testo animato → pexels persona che dorme → demo DS · export MP4</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'reel3')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Caption + hashtag pronti</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">🎙 Script (da incollare in ElevenLabs)</div>
+        <div class="copy-box">
+          <pre class="copy-text">I miei clienti preferiscono parlare con una persona vera.
+
+Sono d'accordo. Le persone vere sono meglio.
+
+Le persone vere dormono. Mangiano. Hanno giornate storte. Non sono disponibili H24.
+
+Un agente vocale non ti sostituisce. Copre il vuoto quando tu non ci sei. Come avere qualcuno che risponde sempre — senza stipendio, senza ferie, senza giornate storte.
+
+Commenta la tua obiezione preferita sull'AI. Le smonto tutte.</pre>
+          <button class="copy-btn" onclick="cp(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">📝 Testi Overlay CapCut</div>
+        <table class="ov-table">
+          <tr><th>#</th><th>Testo</th><th>Timing</th><th>Posizione</th><th>Stile</th></tr>
+          <tr><td>1</td><td><b>giusto.</b></td><td class="timing">0–4s</td><td class="pos">centro-bassa</td><td class="pos">Bold nero, sfondo bianco, dim 56</td></tr>
+          <tr><td>2</td><td><b>ma...</b></td><td class="timing">6–10s</td><td class="pos">tra i due box</td><td class="pos">Bold bianco, dim 64</td></tr>
+          <tr><td>3</td><td><b>come te. come me.</b></td><td class="timing">12–22s</td><td class="pos">tra i due box</td><td class="pos">Bold bianco, dim 38</td></tr>
+          <tr><td>4</td><td><b>lui non dorme.</b></td><td class="timing">26–38s</td><td class="pos">tra i due box</td><td class="pos">Cyan #4DD9F0, bold, dim 48</td></tr>
+          <tr><td>5</td><td><b>vai.</b></td><td class="timing">40–45s</td><td class="pos">centro</td><td class="pos">Bold nero, sfondo bianco, dim 80</td></tr>
+        </table>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">📲 Caption Instagram</div>
+        <div class="copy-box">
+          <pre class="copy-text">"I miei clienti preferiscono parlare con una persona vera."
+
+Sono d'accordo.
+Le persone vere sono meglio.
+
+Alle 23 con chi parlano?
+
+Un agente vocale non ti sostituisce.
+Copre il vuoto quando tu non ci sei.
+Senza stipendio. Senza ferie. Senza giornate storte.
+
+Commenta la tua obiezione preferita sull'AI 👇
+Le smonto tutte, una per una.</pre>
+          <button class="copy-btn" onclick="cp(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">🏷 Hashtag Instagram</div>
+        <div class="ht-row" id="ht-reel3">
+          <span class="ht">#digitalsam</span><span class="ht">#agentevocaleAI</span><span class="ht">#AIperPMI</span><span class="ht">#mitiAI</span><span class="ht">#automatizzareconAI</span><span class="ht">#PMIitaliane</span><span class="ht">#intelligenzaartificiale</span><span class="ht">#lavorareconlAI</span>
+          <button class="ht-btn" onclick="cpHt('ht-reel3',this)">Copia tutti #</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">🎵 Caption TikTok</div>
+        <div class="copy-box">
+          <pre class="copy-text">"I miei clienti preferiscono una persona vera." Okay. Alle 23 con chi parlano? 😅
+#digitalsam #AIitalia #agentevocale #mitiAI</pre>
+          <button class="copy-btn" onclick="cp(this)">Copia</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKEDIN -->
+  <div class="card" style="border-left: 3px solid #0077B5;">
+    <div class="card-head">
+      <div class="day-chip">Ven 17 Apr</div>
+      <div class="format-chip">📝 Post testo</div>
+      <span class="ch-li">LinkedIn</span>
+      <div class="card-title">Cerco 3 attività a Trieste per testare l'agente vocale — beta con setup €197</div>
+      <div class="sched">🕘 09:00 LI</div>
+    </div>
+    <div class="card-body">
+      <div class="sec">
+        <div class="sec-label">✅ Checklist</div>
+        <div class="checklist" id="cl-li">
+          <div class="check-item" onclick="toggle(this,'li')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Copia caption qui sotto → incolla su LinkedIn</div><span class="check-sub">Nuovo post → tasto orologio 🕐 → programma ven 17 ore 09:00</span></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'li')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Aggiungi immagine (opzionale)</div><span class="check-sub">Screenshot demo digitalsam.it o avatar DS — aumenta il reach del 30%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-label">📝 Caption LinkedIn</div>
+        <div class="copy-box">
+          <pre class="copy-text">Sto cercando 3 attività a Trieste disposte a testare un agente vocale AI.
+
+Setup a €197 (invece di €497). Poi 2 mesi gratuiti per testare. Dopo, se funziona, €97/mese. Se non funziona, ci salutiamo senza rancori.
+
+Cosa ottieni:
+→ Un agente vocale configurato sulla tua attività
+→ Risponde alle chiamate fuori orario
+→ Gestisce prenotazioni e domande frequenti
+→ Test di 2 settimane
+
+A chi è rivolto:
+Ristoranti, studi medici, studi legali, negozi, artigiani.
+Qualunque attività che riceve chiamate e non può sempre rispondere.
+
+Perché lo faccio con uno sconto?
+Perché ho bisogno di casi reali da Trieste.
+Semplice.
+
+Scrivimi in privato o commenta qui sotto.
+
+—
+Samantha Del Vecchio | Digital Sam
+digitalsam.it</pre>
+          <button class="copy-btn" onclick="cp(this)">Copia</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /panel reel3 -->
+
+<!-- ═══════════════ PROGRAMMAZIONE ═══════════════ -->
+<div class="panel" id="panel-sched">
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">📅 Checklist Programmazione — Sabato mattina</div>
+    </div>
+    <div class="card-body">
+
+      <div class="sec">
+        <div class="sec-label">Meta Business Suite — business.facebook.com</div>
+        <div class="checklist" id="cl-sched-meta">
+          <div class="check-item" onclick="toggle(this,'sched-meta')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Reel Lun 13 → Pianificatore → carica MP4 → caption + hashtag IG → Lun 13, 18:00</div></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'sched-meta')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Carosello Mar 15 → carica 7 PNG → caption + hashtag → Mar 15, 12:00</div></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'sched-meta')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Reel Gio 16 → carica MP4 → caption + hashtag → Gio 16, 18:00</div></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'sched-meta')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Reel Ven 17 → carica MP4 → caption + hashtag → Ven 17, 12:00</div></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'sched-meta')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Stories Lun 13 → 3 slide teaser → Lun 13, 09:00</div></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'sched-meta')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Verifica cross-post FB attivo su tutti i contenuti</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">TikTok Studio — studio.tiktok.com</div>
+        <div class="checklist" id="cl-sched-tk">
+          <div class="check-item" onclick="toggle(this,'sched-tk')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Upload Reel 1 → caption TK → hashtag → Lun 13, 18:30</div></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'sched-tk')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Upload Reel 2 → caption TK → hashtag → Gio 16, 18:30</div></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'sched-tk')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Upload Reel 3 → caption TK → hashtag → Ven 17, 12:30</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">LinkedIn — linkedin.com</div>
+        <div class="checklist" id="cl-sched-li">
+          <div class="check-item" onclick="toggle(this,'sched-li')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Nuovo post → incolla caption → icona 🕐 → Ven 17, 09:00</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label">✅ Review finale</div>
+        <div class="checklist" id="cl-sched-review">
+          <div class="check-item" onclick="toggle(this,'sched-review')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Anteprima tutti i post in Business Suite</div></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'sched-review')">
+            <div class="check-box"></div>
+            <div><div class="check-label">Verifica che i video non siano stati rifiutati (musica copyright)</div></div>
+          </div>
+          <div class="check-item" onclick="toggle(this,'sched-review')">
+            <div class="check-box"></div>
+            <div><div class="check-label" style="color:var(--green);font-weight:700;">✅ Settimana programmata. Lunedì puoi concentrarti sui clienti.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /panel sched -->
+
+</div><!-- /content -->
+
+<script>
+const KEY = 'ds-prod-apr13';
+let state = JSON.parse(localStorage.getItem(KEY) || '{}');
+
+function toggle(el, group) {
+  const id = group + '-' + Array.from(el.parentElement.children).indexOf(el);
+  const done = !el.classList.contains('done');
+  el.classList.toggle('done', done);
+  el.querySelector('.check-box').textContent = done ? '✓' : '';
+  state[id] = done;
+  localStorage.setItem(KEY, JSON.stringify(state));
+  updateProgress();
+  updateBadges();
+}
+
+function restoreState() {
+  document.querySelectorAll('.checklist').forEach(list => {
+    const group = list.id.replace('cl-','');
+    list.querySelectorAll('.check-item').forEach((item, i) => {
+      const id = group + '-' + i;
+      if (state[id]) {
+        item.classList.add('done');
+        item.querySelector('.check-box').textContent = '✓';
+      }
+    });
+  });
+  updateProgress();
+  updateBadges();
+}
+
+function updateProgress() {
+  const all = document.querySelectorAll('.check-item').length;
+  const done = document.querySelectorAll('.check-item.done').length;
+  const pct = all ? Math.round(done / all * 100) : 0;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('pct-label').textContent = pct + '% (' + done + '/' + all + ')';
+}
+
+function updateBadges() {
+  const panels = {
+    'reel1': ['cl-reel1'],
+    'caros': ['cl-caros'],
+    'reel2': ['cl-reel2'],
+    'reel3': ['cl-reel3','cl-li']
+  };
+  for (const [tab, lists] of Object.entries(panels)) {
+    let all = 0, done = 0;
+    lists.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      all += el.querySelectorAll('.check-item').length;
+      done += el.querySelectorAll('.check-item.done').length;
+    });
+    const badge = document.getElementById('badge-' + tab);
+    if (badge) {
+      badge.innerHTML = done === all && all > 0 ? '<span class="done-badge">✓</span>' : '';
+    }
+  }
+}
+
+function switchTab(el, tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+
+function cp(btn) {
+  const pre = btn.previousElementSibling;
+  navigator.clipboard.writeText(pre.textContent.trim()).then(() => {
+    btn.textContent = '✓ Copiato'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copia'; btn.classList.remove('ok'); }, 2000);
+  });
+}
+
+function cpHt(id, btn) {
+  const row = document.getElementById(id);
+  const txt = Array.from(row.querySelectorAll('.ht')).map(t => t.textContent).join(' ');
+  navigator.clipboard.writeText(txt).then(() => {
+    btn.textContent = '✓ Copiati'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copia tutti #'; btn.classList.remove('ok'); }, 2000);
+  });
+}
+
+restoreState();
+</script>
+</body>
+</html>
