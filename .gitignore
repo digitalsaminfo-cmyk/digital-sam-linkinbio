@@ -18,6 +18,10 @@ sessioni/
 # Cartella .claude (settings e memoria locale)
 .claude/
 
+# PDF (esclusi tranne prodotti pubblici)
+*.pdf
+!prodotti/*.pdf
+
 # Dati clienti sensibili
 clienti/
 
