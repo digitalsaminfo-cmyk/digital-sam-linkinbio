@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Digital Sam — AI Toolbox</title>
-  <meta name="description" content="La raccolta personale di tool AI, workflow e risorse di Samantha Del Vecchio aka Digital Sam." />
+  <meta name="description" content="Prodotti digitali, tool AI e risorse di Samantha Del Vecchio aka Digital Sam." />
   <style>
     :root {
       --cyan: #4DD9F0;
@@ -27,77 +27,75 @@
       min-height: 100vh;
     }
 
-    /* ── STICKY HEADER ── */
+    /* HEADER */
     .site-header {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(7, 16, 30, 0.92);
+      background: rgba(7,16,30,0.92);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(77, 217, 240, 0.15);
+      border-bottom: 1px solid rgba(77,217,240,0.15);
       padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .site-header .logo {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: var(--cyan);
-    }
-    .site-header .logo span { color: var(--gold); }
 
-    /* ── MAIN CONTAINER ── */
+    /* CONTAINER */
     .container {
       max-width: 480px;
       margin: 0 auto;
-      padding: 28px 16px 60px;
+      padding: 24px 16px 60px;
     }
 
-    /* ── HERO ── */
+    /* HERO */
     .hero {
       text-align: center;
-      padding: 32px 0 24px;
+      padding: 28px 0 20px;
     }
     .avatar {
-      width: 80px;
-      height: 80px;
+      width: 76px;
+      height: 76px;
       border-radius: 50%;
       background: var(--dark-3);
       border: 2.5px solid var(--gold);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 800;
       color: var(--gold);
-      margin: 0 auto 16px;
+      margin: 0 auto 14px;
       letter-spacing: -1px;
     }
     .hero h1 {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 10px;
+      line-height: 1.25;
+      margin-bottom: 8px;
     }
     .hero p {
       color: var(--text-muted);
-      font-size: 13.5px;
+      font-size: 13px;
       max-width: 360px;
       margin: 0 auto;
     }
 
-    /* ── DIVIDER ── */
+    /* DIVIDER */
     .divider {
       height: 1.5px;
       background: linear-gradient(90deg, transparent, var(--cyan), var(--gold), transparent);
-      margin: 28px 0;
-      opacity: 0.6;
+      margin: 22px 0;
+      opacity: 0.5;
+    }
+    .divider-thin {
+      height: 1px;
+      background: rgba(77,217,240,0.1);
+      margin: 18px 0;
     }
 
-    /* ── SECTION HEADER ── */
+    /* SECTION LABEL */
     .section-label {
       font-size: 11px;
       font-weight: 700;
@@ -113,13 +111,13 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: rgba(77, 217, 240, 0.2);
+      background: rgba(77,217,240,0.2);
     }
 
-    /* ── CARD ── */
+    /* CARD BASE */
     .card {
       background: var(--dark-2);
-      border: 1px solid rgba(77, 217, 240, 0.12);
+      border: 1px solid rgba(77,217,240,0.12);
       border-radius: 14px;
       padding: 18px;
       margin-bottom: 12px;
@@ -133,27 +131,69 @@
       transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.22s, box-shadow 0.22s;
     }
     .card:hover {
-      border-color: rgba(77, 217, 240, 0.5);
-      box-shadow: 0 0 20px rgba(77, 217, 240, 0.08);
+      border-color: rgba(77,217,240,0.4);
+      box-shadow: 0 0 20px rgba(77,217,240,0.07);
       transform: translateY(-2px);
     }
 
-    /* ── CARD PREMIUM (Esserci) ── */
+    /* CARD PRODOTTO — più prominente */
+    .card-prodotto {
+      border-color: rgba(77,217,240,0.25);
+      background: linear-gradient(135deg, #0f2040, #0d1f35);
+      padding: 20px;
+    }
+    .card-prodotto:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 28px rgba(77,217,240,0.12);
+    }
+
+    /* CARD PRODOTTO GOLD */
+    .card-prodotto-gold {
+      border-color: rgba(245,166,35,0.3);
+      background: linear-gradient(135deg, #1a1500, #0d1f35);
+    }
+    .card-prodotto-gold:hover {
+      border-color: var(--gold);
+      box-shadow: 0 0 28px rgba(245,166,35,0.12);
+    }
+
+    /* CARD NEW */
+    .card-new {
+      border-color: rgba(77,217,240,0.35);
+      background: linear-gradient(135deg, #0a1e38, #0d1f35);
+      position: relative;
+      overflow: hidden;
+    }
+    .card-new::before {
+      content: '✦ NUOVO';
+      position: absolute;
+      top: 12px;
+      right: -22px;
+      background: var(--cyan);
+      color: var(--dark);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 3px 28px;
+      transform: rotate(35deg);
+    }
+
+    /* CARD PREMIUM */
     .card-premium {
-      border-color: rgba(245, 166, 35, 0.4);
+      border-color: rgba(245,166,35,0.4);
       background: linear-gradient(135deg, var(--dark-2), #1a1500);
       animation: goldPulse 3s ease-in-out infinite;
     }
     .card-premium:hover {
       border-color: var(--gold);
-      box-shadow: 0 0 28px rgba(245, 166, 35, 0.18);
+      box-shadow: 0 0 28px rgba(245,166,35,0.18);
     }
     @keyframes goldPulse {
-      0%, 100% { box-shadow: 0 0 0px rgba(245, 166, 35, 0); }
-      50% { box-shadow: 0 0 16px rgba(245, 166, 35, 0.14); }
+      0%,100% { box-shadow: 0 0 0px rgba(245,166,35,0); }
+      50%      { box-shadow: 0 0 16px rgba(245,166,35,0.14); }
     }
 
-    /* ── CARD HEADER ── */
+    /* CARD HEADER */
     .card-header {
       display: flex;
       align-items: flex-start;
@@ -166,11 +206,11 @@
       font-weight: 700;
       color: var(--text);
     }
-    .card-icon {
-      font-size: 22px;
-      flex-shrink: 0;
-      line-height: 1;
+    .card-title-lg {
+      font-size: 16px;
+      font-weight: 800;
     }
+    .card-icon { font-size: 22px; flex-shrink: 0; line-height: 1; }
     .card-body {
       font-size: 13.5px;
       color: var(--text-muted);
@@ -178,7 +218,25 @@
       margin-bottom: 14px;
     }
 
-    /* ── BADGE ── */
+    /* PREZZO */
+    .price-tag {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 4px;
+      margin: 8px 0 14px;
+    }
+    .price-amount {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .price-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* BADGE */
     .badge {
       display: inline-block;
       font-size: 10.5px;
@@ -189,35 +247,60 @@
       margin-bottom: 8px;
       text-transform: uppercase;
     }
-    .badge-cyan  { background: rgba(77,217,240,0.15); color: var(--cyan); border: 1px solid rgba(77,217,240,0.3); }
-    .badge-gold  { background: rgba(245,166,35,0.15); color: var(--gold); border: 1px solid rgba(245,166,35,0.35); }
-    .badge-green { background: rgba(52,211,153,0.15); color: #34d399;    border: 1px solid rgba(52,211,153,0.3); }
-    .badge-gray  { background: rgba(148,163,184,0.1); color: #94a3b8;    border: 1px solid rgba(148,163,184,0.2); }
+    .badge-cyan  { background: rgba(77,217,240,0.15);  color: var(--cyan); border: 1px solid rgba(77,217,240,0.3); }
+    .badge-gold  { background: rgba(245,166,35,0.15);  color: var(--gold); border: 1px solid rgba(245,166,35,0.35); }
+    .badge-green { background: rgba(52,211,153,0.15);  color: #34d399;     border: 1px solid rgba(52,211,153,0.3); }
+    .badge-gray  { background: rgba(148,163,184,0.1);  color: #94a3b8;     border: 1px solid rgba(148,163,184,0.2); }
+    .badge-new   { background: rgba(77,217,240,0.2);   color: var(--cyan); border: 1px solid var(--cyan); }
 
-    /* ── BUTTON ── */
+    /* BUTTON */
     .btn {
       display: block;
       width: 100%;
       text-align: center;
-      padding: 11px 18px;
+      padding: 12px 18px;
       border-radius: 10px;
-      font-size: 13.5px;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 700;
       text-decoration: none;
       cursor: pointer;
       border: none;
-      transition: opacity 0.18s, transform 0.15s;
+      transition: opacity 0.18s, transform 0.15s, box-shadow 0.18s;
       letter-spacing: 0.01em;
     }
-    .btn:hover { opacity: 0.88; transform: scale(1.01); }
+    .btn:hover  { opacity: 0.88; transform: scale(1.01); }
     .btn:active { transform: scale(0.98); }
 
     .btn-cyan  { background: var(--cyan); color: var(--dark); }
     .btn-gold  { background: var(--gold); color: var(--dark); }
+    .btn-cyan:hover { box-shadow: 0 6px 20px rgba(77,217,240,0.3); }
+    .btn-gold:hover { box-shadow: 0 6px 20px rgba(245,166,35,0.3); }
     .btn-ghost { background: rgba(148,163,184,0.12); color: #64748b; cursor: default; }
     .btn-ghost:hover { opacity: 1; transform: none; }
+    .btn-outline-cyan {
+      background: transparent;
+      color: var(--cyan);
+      border: 1.5px solid rgba(77,217,240,0.4);
+    }
+    .btn-outline-cyan:hover { background: rgba(77,217,240,0.08); border-color: var(--cyan); }
 
-    /* ── QUOTE ── */
+    /* LIST */
+    .feature-list {
+      margin: 0 0 14px 0;
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .feature-list li {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+    }
+
+    /* QUOTE */
     .quote {
       font-style: italic;
       border-left: 3px solid var(--gold);
@@ -227,7 +310,7 @@
       margin: 12px 0;
     }
 
-    /* ── CASESTUDY ── */
+    /* CASE STUDY */
     .case-study {
       background: var(--dark-3);
       border-radius: 10px;
@@ -242,18 +325,11 @@
       color: var(--gold);
       margin-bottom: 6px;
     }
-    .case-study p {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-    .case-study a {
-      color: var(--cyan);
-      text-decoration: none;
-      font-size: 13px;
-    }
+    .case-study p  { font-size: 13px; color: var(--text-muted); }
+    .case-study a  { color: var(--cyan); text-decoration: none; font-size: 13px; }
     .case-study a:hover { text-decoration: underline; }
 
-    /* ── TOOL CARD (compact, for Design section) ── */
+    /* TOOL ROW */
     .tool-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -265,50 +341,23 @@
       border-radius: 12px;
       padding: 14px;
       transition: border-color 0.2s, transform 0.18s;
+      opacity: 0;
+      transform: translateY(16px);
     }
-    .tool-card:hover {
-      border-color: rgba(77,217,240,0.35);
-      transform: translateY(-2px);
-    }
-    .tool-card-name {
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .tool-card-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.5;
-      margin-bottom: 10px;
-    }
+    .tool-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.2s; }
+    .tool-card:hover   { border-color: rgba(77,217,240,0.35); transform: translateY(-2px); }
+    .tool-card-name    { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .tool-card-desc    { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; }
 
-    /* ── BIO SECTION ── */
-    .bio-box {
-      background: var(--dark-2);
-      border: 1px solid rgba(77,217,240,0.12);
-      border-radius: 14px;
-      padding: 22px 18px;
-    }
-    .bio-name {
-      font-size: 17px;
-      font-weight: 800;
-      margin-bottom: 2px;
-    }
-    .bio-handle {
-      font-size: 12.5px;
-      color: var(--cyan);
-      margin-bottom: 14px;
-      font-weight: 600;
-    }
-    .bio-text {
-      font-size: 13.5px;
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
+    /* BIO */
+    .bio-box { background: var(--dark-2); border: 1px solid rgba(77,217,240,0.12); border-radius: 14px; padding: 22px 18px; }
+    .bio-name   { font-size: 17px; font-weight: 800; margin-bottom: 2px; }
+    .bio-handle { font-size: 12.5px; color: var(--cyan); margin-bottom: 14px; font-weight: 600; }
+    .bio-text   { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; }
     .bio-text p + p { margin-top: 10px; }
     .bio-text strong { color: var(--text); }
 
-    /* ── SOCIAL FOOTER ── */
+    /* SOCIAL */
     .social-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -331,18 +380,10 @@
       letter-spacing: 0.04em;
       transition: border-color 0.2s, color 0.2s, transform 0.18s;
     }
-    .social-btn:hover {
-      border-color: rgba(77,217,240,0.4);
-      color: var(--cyan);
-      transform: translateY(-2px);
-    }
+    .social-btn:hover { border-color: rgba(77,217,240,0.4); color: var(--cyan); transform: translateY(-2px); }
     .social-btn .icon { font-size: 20px; }
 
-    .contact-row {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .contact-row { display: flex; flex-direction: column; gap: 8px; }
     .contact-item {
       display: flex;
       align-items: center;
@@ -359,45 +400,37 @@
     .contact-item:hover { border-color: rgba(77,217,240,0.3); color: var(--cyan); }
     .contact-icon { font-size: 15px; }
 
-    /* ── FOOTER COPY ── */
-    .footer-copy {
-      text-align: center;
-      font-size: 11.5px;
-      color: #2d4a5a;
-      padding-top: 28px;
-    }
+    .footer-copy { text-align: center; font-size: 11.5px; color: #2d4a5a; padding-top: 28px; }
 
-    /* ── SCROLL ANIMATION ── */
-    @media (prefers-reduced-motion: no-preference) {
-      .card { transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.22s, box-shadow 0.22s; }
+    /* MOBILE */
+    @media (max-width: 360px) {
+      .social-grid { grid-template-columns: repeat(2, 1fr); }
+      .tool-row    { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- STICKY HEADER -->
 <header class="site-header">
-  <div class="logo" style="display:flex;align-items:center;gap:10px;">
-    <a href="https://digitalsam.it" style="text-decoration:none;display:flex;align-items:center;">
-      <svg width="120" height="24" viewBox="0 0 210 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
-        <defs>
-          <linearGradient id="hLD" x1="2" y1="0" x2="28" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C8F8FF"/><stop offset="30%" stop-color="#4DD9F0"/><stop offset="70%" stop-color="#2BBCD6"/><stop offset="100%" stop-color="#0F7A96"/></linearGradient>
-          <linearGradient id="hLS" x1="18" y1="0" x2="46" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FFF0A0"/><stop offset="30%" stop-color="#F5A623"/><stop offset="70%" stop-color="#D48A10"/><stop offset="100%" stop-color="#8A5500"/></linearGradient>
-          <linearGradient id="hLDigital" x1="66" y1="0" x2="130" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#A8F0FA"/><stop offset="100%" stop-color="#4DD9F0"/></linearGradient>
-          <linearGradient id="hLSam" x1="66" y1="0" x2="115" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FFE070"/><stop offset="100%" stop-color="#F5A623"/></linearGradient>
-          <filter id="hFD" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/><feFlood flood-color="#4DD9F0" flood-opacity="0.55" result="color"/><feComposite in="color" in2="blur" operator="in" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="hFS" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/><feFlood flood-color="#F5A623" flood-opacity="0.55" result="color"/><feComposite in="color" in2="blur" operator="in" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <rect x="0" y="1" width="55" height="40" rx="9" fill="rgba(7,16,30,0.6)" stroke="url(#hLD)" stroke-width="1" stroke-opacity="0.3"/>
-        <text x="3" y="36" font-family="'Arial Black','Impact',Arial,sans-serif" font-size="36" font-weight="900" fill="url(#hLD)" filter="url(#hFD)">D</text>
-        <text x="21" y="36" font-family="'Arial Black','Impact',Arial,sans-serif" font-size="36" font-weight="900" fill="url(#hLS)" filter="url(#hFS)">S</text>
-        <line x1="63" y1="7" x2="63" y2="35" stroke="rgba(77,217,240,0.22)" stroke-width="1.5" stroke-linecap="round"/>
-        <text x="71" y="20" font-family="'Plus Jakarta Sans','Arial',sans-serif" font-size="12" font-weight="700" letter-spacing="1.8" fill="url(#hLDigital)">DIGITAL</text>
-        <text x="71" y="36" font-family="'Plus Jakarta Sans','Arial',sans-serif" font-size="16" font-weight="800" letter-spacing="0.5" fill="url(#hLSam)">Sam</text>
-      </svg>
-    </a>
+  <a href="https://digitalsam.it" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+    <svg width="120" height="24" viewBox="0 0 210 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+      <defs>
+        <linearGradient id="hLD" x1="2" y1="0" x2="28" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C8F8FF"/><stop offset="30%" stop-color="#4DD9F0"/><stop offset="70%" stop-color="#2BBCD6"/><stop offset="100%" stop-color="#0F7A96"/></linearGradient>
+        <linearGradient id="hLS" x1="18" y1="0" x2="46" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FFF0A0"/><stop offset="30%" stop-color="#F5A623"/><stop offset="70%" stop-color="#D48A10"/><stop offset="100%" stop-color="#8A5500"/></linearGradient>
+        <linearGradient id="hLDigital" x1="66" y1="0" x2="130" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#A8F0FA"/><stop offset="100%" stop-color="#4DD9F0"/></linearGradient>
+        <linearGradient id="hLSam" x1="66" y1="0" x2="115" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FFE070"/><stop offset="100%" stop-color="#F5A623"/></linearGradient>
+        <filter id="hFD" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/><feFlood flood-color="#4DD9F0" flood-opacity="0.55" result="color"/><feComposite in="color" in2="blur" operator="in" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="hFS" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/><feFlood flood-color="#F5A623" flood-opacity="0.55" result="color"/><feComposite in="color" in2="blur" operator="in" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <rect x="0" y="1" width="55" height="40" rx="9" fill="rgba(7,16,30,0.6)" stroke="url(#hLD)" stroke-width="1" stroke-opacity="0.3"/>
+      <text x="3" y="36" font-family="'Arial Black','Impact',Arial,sans-serif" font-size="36" font-weight="900" fill="url(#hLD)" filter="url(#hFD)">D</text>
+      <text x="21" y="36" font-family="'Arial Black','Impact',Arial,sans-serif" font-size="36" font-weight="900" fill="url(#hLS)" filter="url(#hFS)">S</text>
+      <line x1="63" y1="7" x2="63" y2="35" stroke="rgba(77,217,240,0.22)" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="71" y="20" font-family="'Plus Jakarta Sans','Arial',sans-serif" font-size="12" font-weight="700" letter-spacing="1.8" fill="url(#hLDigital)">DIGITAL</text>
+      <text x="71" y="36" font-family="'Plus Jakarta Sans','Arial',sans-serif" font-size="16" font-weight="800" letter-spacing="0.5" fill="url(#hLSam)">Sam</text>
+    </svg>
     <span style="color:var(--text-muted);font-weight:400;font-size:12px;letter-spacing:0.05em;">AI Toolbox</span>
-  </div>
+  </a>
 </header>
 
 <main class="container">
@@ -405,75 +438,99 @@
   <!-- HERO -->
   <section class="hero">
     <div class="avatar">SD</div>
-    <h1>🌀 Benvenutə nella mia AI Toolbox</h1>
-    <p>La mia raccolta personale di strumenti, risorse e ispirazioni per creare contenuti più velocemente, con più qualità e con meno sbatti. Una mini‑landing page sempre aggiornata.</p>
+    <h1>Samantha Del Vecchio<br/><span style="color:var(--cyan);font-size:16px;font-weight:600;">aka Digital Sam</span></h1>
+    <p style="margin-top:8px;">AI educator · Digital marketing per PMI · Trieste</p>
   </section>
 
   <div class="divider"></div>
 
-  <!-- SEZIONE 1 — VOCE AI -->
-  <p class="section-label">🎙️ Voce AI &amp; Audio Pro</p>
+  <!-- ═══════════════════════════════
+       PRODOTTI DIGITALI — IN EVIDENZA
+  ════════════════════════════════════ -->
+  <p class="section-label">🛒 Prodotti Digitali</p>
 
-  <div class="card">
+  <!-- Da Zero a Vendere con Claude -->
+  <div class="card card-new card-prodotto">
     <div class="card-header">
       <div>
-        <span class="badge badge-cyan">🔥 Link Affiliato</span>
-        <div class="card-title">ElevenLabs – La mia voce AI</div>
-      </div>
-      <div class="card-icon">🎙️</div>
-    </div>
-    <p class="card-body">
-      Uso ElevenLabs per creare voci realistiche, clonare la mia voce e dare ai miei contenuti un audio professionale in pochi secondi. È uno dei tool che ha trasformato il mio modo di lavorare: veloce, intuitivo, potente.
-    </p>
-    <a href="https://try.elevenlabs.io/digitalsam" target="_blank" rel="noopener" class="btn btn-cyan">
-      👉 Provalo qui (link affiliato)
-    </a>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- SEZIONE 2 — AVATAR & VIDEO AI -->
-  <p class="section-label">🎥 Avatar &amp; Video AI</p>
-
-  <div class="card">
-    <div class="card-header">
-      <div>
-        <span class="badge badge-gray">🔜 Coming Soon</span>
-        <div class="card-title">HeyGen – Avatar &amp; Video AI</div>
+        <span class="badge badge-new">🆕 Nuovo</span>
+        <div class="card-title card-title-lg">Da Zero a Vendere con Claude</div>
       </div>
       <div class="card-icon">🤖</div>
     </div>
     <p class="card-body">
-      Creo avatar realistici, doppiaggi automatici e video professionali in pochi minuti. Perfetto per chi vuole creare contenuti parlati senza essere sempre davanti alla camera.
+      Il metodo che ho usato per creare e vendere prodotti digitali usando Claude come co-autore. 6 moduli pratici, prompt pronti, zero teoria inutile — dall'idea alla vendita.
     </p>
-    <a href="https://www.heygen.com" target="_blank" rel="noopener" class="btn btn-cyan" style="background:rgba(77,217,240,0.15);color:var(--cyan);border:1px solid rgba(77,217,240,0.3);">
-      🌐 Visita HeyGen (link affiliato in arrivo)
+    <ul class="feature-list">
+      <li><span style="color:var(--cyan);">→</span> Trova l'idea giusta e valida il mercato</li>
+      <li><span style="color:var(--cyan);">→</span> Crea il contenuto con Claude in ore, non settimane</li>
+      <li><span style="color:var(--cyan);">→</span> Scrivi la pagina di vendita che converte</li>
+      <li><span style="color:var(--cyan);">→</span> Porta traffico senza mostrare la faccia</li>
+    </ul>
+    <a href="https://digitalsam.it/da-zero-a-vendere/" target="_blank" rel="noopener" class="btn btn-cyan">
+      👉 Scopri il corso →
+    </a>
+  </div>
+
+  <div class="divider-thin"></div>
+
+  <!-- 21 Prompt PMI -->
+  <div class="card card-prodotto">
+    <div class="card-header">
+      <div>
+        <span class="badge badge-cyan">📘 PDF</span>
+        <div class="card-title card-title-lg">21 Prompt ChatGPT per Imprenditori Locali</div>
+      </div>
+      <div class="card-icon">🏪</div>
+    </div>
+    <p class="card-body">
+      Hai un negozio, uno studio, un ristorante? Questi 21 prompt ti fanno usare ChatGPT per rispondere ai clienti, creare post social e gestire il quotidiano — senza sapere nulla di AI.
+    </p>
+    <ul class="feature-list">
+      <li><span style="color:var(--cyan);">→</span> 7 prompt per comunicare con i clienti</li>
+      <li><span style="color:var(--cyan);">→</span> 7 prompt per social &amp; contenuti</li>
+      <li><span style="color:var(--cyan);">→</span> 7 prompt per operatività &amp; gestione</li>
+    </ul>
+    <div class="price-tag">
+      <span class="price-amount">€9</span>
+      <span class="price-label">· accesso immediato</span>
+    </div>
+    <a href="https://buy.stripe.com/8x25kC8l1gso4gZ7vGgYU03" target="_blank" rel="noopener" class="btn btn-cyan">
+      💳 Acquista ora →
+    </a>
+  </div>
+
+  <div class="divider-thin"></div>
+
+  <!-- 21 Prompt Creator -->
+  <div class="card card-prodotto-gold">
+    <div class="card-header">
+      <div>
+        <span class="badge badge-gold">📒 PDF</span>
+        <div class="card-title card-title-lg">21 Prompt ChatGPT per Creator Digitali</div>
+      </div>
+      <div class="card-icon">🎯</div>
+    </div>
+    <p class="card-body">
+      Vuoi vendere prodotti digitali ma non sai da dove iniziare? Dalla validazione dell'idea al lancio — script per video, risposte alle obiezioni, sequenze di vendita. Tutto pronto da usare.
+    </p>
+    <ul class="feature-list">
+      <li><span style="color:var(--gold);">→</span> 7 prompt per validare &amp; creare il prodotto</li>
+      <li><span style="color:var(--gold);">→</span> 7 prompt per vendere senza sembrare un venditore</li>
+      <li><span style="color:var(--gold);">→</span> 7 prompt per lanciare, scalare &amp; ripetere</li>
+    </ul>
+    <div class="price-tag">
+      <span class="price-amount" style="color:var(--gold);">€11</span>
+      <span class="price-label">· accesso immediato</span>
+    </div>
+    <a href="https://buy.stripe.com/6oUdR89p5a408xf2bmgYU02" target="_blank" rel="noopener" class="btn btn-gold">
+      💳 Acquista ora →
     </a>
   </div>
 
   <div class="divider"></div>
 
-  <!-- SEZIONE 3 — DESIGN & TEMPLATE -->
-  <p class="section-label">🎨 Design &amp; Template</p>
-
-  <div class="tool-row">
-    <div class="tool-card">
-      <div class="badge badge-gray" style="font-size:10px;">Coming Soon</div>
-      <div class="tool-card-name">🎨 Canva</div>
-      <div class="tool-card-desc">Il mio spazio creativo quotidiano: grafiche, reel, caroselli, presentazioni. Se creo qualcosa… nasce qui.</div>
-      <a href="https://www.canva.com" target="_blank" rel="noopener" class="btn" style="font-size:12px;padding:8px 10px;background:rgba(77,217,240,0.12);color:var(--cyan);border:1px solid rgba(77,217,240,0.25);">🌐 Vai a Canva</a>
-    </div>
-    <div class="tool-card">
-      <div class="badge badge-gray" style="font-size:10px;">Coming Soon</div>
-      <div class="tool-card-name">🖼️ Freepik</div>
-      <div class="tool-card-desc">La uso per creare immagini, video e avatar. Una libreria enorme di risorse visive pronte all'uso.</div>
-      <a href="https://www.freepik.com" target="_blank" rel="noopener" class="btn" style="font-size:12px;padding:8px 10px;background:rgba(77,217,240,0.12);color:var(--cyan);border:1px solid rgba(77,217,240,0.25);">🌐 Vai a Freepik</a>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- SEZIONE 4 — COMMUNITY & FORMAZIONE (PREMIUM) -->
+  <!-- COMMUNITY -->
   <p class="section-label">🧬 Community &amp; Formazione</p>
 
   <div class="card card-premium">
@@ -503,13 +560,11 @@
     <p class="card-body">
       💛 <strong style="color:var(--gold);">Perché vale la pena entrarci ora:</strong> L'accesso costa ancora 17$ al mese — un prezzo ridicolo rispetto al valore reale. È uno di quei posti in cui entrare adesso è intelligente.
     </p>
-
     <div class="case-study">
       <div class="case-study-title">🎬 Case Study — Videoclip ufficiale di Dolcenera</div>
       <p>Uno dei progetti più sorprendenti di Gabriele: scene reali integrate con AI. Il risultato dimostra una cosa fondamentale: l'AI non sostituisce l'artista — <strong style="color:var(--text);">amplifica la visione.</strong></p>
       <a href="https://www.youtube.com/watch?v=wgmr4X_pIag" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;">▶️ Guarda il videoclip →</a>
     </div>
-
     <a href="https://www.skool.com/esserci/about?ref=6930f1b733d34348a422fe588749d8dc" target="_blank" rel="noopener" class="btn btn-gold" style="margin-top:6px;">
       👉 Entra nella community (17$/mese)
     </a>
@@ -517,8 +572,49 @@
 
   <div class="divider"></div>
 
-  <!-- SEZIONE 5 — WORKFLOW & PRODUTTIVITÀ -->
-  <p class="section-label">⚡ Workflow &amp; Produttività</p>
+  <!-- VOCE AI -->
+  <p class="section-label">🎙️ Voce AI &amp; Audio Pro</p>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <span class="badge badge-cyan">🔥 Link Affiliato</span>
+        <div class="card-title">ElevenLabs – La mia voce AI</div>
+      </div>
+      <div class="card-icon">🎙️</div>
+    </div>
+    <p class="card-body">
+      Lo uso per creare voci realistiche e clonare la mia voce. Uno dei tool che ha trasformato il mio workflow: veloce, intuitivo, potente.
+    </p>
+    <a href="https://try.elevenlabs.io/digitalsam" target="_blank" rel="noopener" class="btn btn-cyan">
+      👉 Provalo qui (link affiliato)
+    </a>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DESIGN & TOOL -->
+  <p class="section-label">🎨 Design &amp; Tool</p>
+
+  <div class="tool-row">
+    <div class="tool-card">
+      <div class="badge badge-gray" style="font-size:10px;">Coming Soon</div>
+      <div class="tool-card-name">🎨 Canva</div>
+      <div class="tool-card-desc">Il mio spazio creativo: grafiche, reel, caroselli, presentazioni.</div>
+      <a href="https://www.canva.com" target="_blank" rel="noopener" class="btn" style="font-size:12px;padding:8px 10px;background:rgba(77,217,240,0.12);color:var(--cyan);border:1px solid rgba(77,217,240,0.25);">🌐 Vai</a>
+    </div>
+    <div class="tool-card">
+      <div class="badge badge-gray" style="font-size:10px;">Coming Soon</div>
+      <div class="tool-card-name">🤖 HeyGen</div>
+      <div class="tool-card-desc">Avatar realistici e video professionali senza stare davanti alla camera.</div>
+      <a href="https://www.heygen.com" target="_blank" rel="noopener" class="btn" style="font-size:12px;padding:8px 10px;background:rgba(77,217,240,0.12);color:var(--cyan);border:1px solid rgba(77,217,240,0.25);">🌐 Vai</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- RISORSE GRATUITE -->
+  <p class="section-label">⚡ Risorse Gratuite</p>
 
   <div class="card">
     <div class="card-header">
@@ -529,17 +625,12 @@
       <div class="card-icon">⚡</div>
     </div>
     <p class="card-body">
-      La lista dei tool AI che apro davvero ogni giorno — con prezzi reali, come li uso concretamente e link diretti. Zero tool inutili, solo quelli che cambiano davvero il modo di lavorare.
+      La lista dei tool AI che apro davvero ogni giorno — prezzi reali, come li uso e link diretti. Zero tool inutili.
     </p>
-    <a href="risorse/5-tool-ai.html" target="_blank" class="btn btn-cyan">
-      👉 Scarica la risorsa gratuita
+    <a href="risorse/5-tool-ai.html" target="_blank" class="btn btn-outline-cyan">
+      👉 Scarica gratis
     </a>
   </div>
-
-  <div class="divider"></div>
-
-  <!-- SEZIONE 6 — TUTORIAL & RISORSE -->
-  <p class="section-label">📚 Tutorial &amp; Risorse</p>
 
   <div class="card">
     <div class="card-header">
@@ -550,145 +641,79 @@
       <div class="card-icon">📘</div>
     </div>
     <p class="card-body">
-      Come usare i layer in Canva per avere tutto sotto controllo e non impazzire con i design complessi. Un tutorial pratico, zero teoria.
+      Come usare i layer in Canva per avere tutto sotto controllo. Tutorial pratico, zero teoria.
     </p>
-    <a href="https://www.instagram.com/p/DWw8HkZFQz_/" target="_blank" rel="noopener" class="btn btn-cyan">
+    <a href="https://www.instagram.com/p/DWw8HkZFQz_/" target="_blank" rel="noopener" class="btn btn-outline-cyan">
       👉 Guarda il tutorial →
     </a>
-    <p style="margin-top:12px;font-size:12.5px;color:var(--text-muted);font-style:italic;">
-      📌 Altri tutorial in arrivo — aggiungerò qui i miei reel educativi man mano che li pubblico.
-    </p>
+    <p style="margin-top:10px;font-size:12px;color:var(--text-muted);font-style:italic;">📌 Altri tutorial in arrivo man mano che pubblico.</p>
   </div>
 
   <div class="divider"></div>
 
-  <!-- SEZIONE — DICHIARAZIONE ETICA -->
+  <!-- TRASPARENZA AI -->
   <p class="section-label">🤖 Trasparenza AI</p>
 
   <div class="card">
     <div class="card-header">
       <div>
         <span class="badge badge-cyan">🤖 Clone in servizio</span>
-        <div class="card-title">Uso l'AI nei miei contenuti — leggi come e perché</div>
+        <div class="card-title">Uso l'AI nei miei contenuti</div>
       </div>
       <div class="card-icon">🛡️</div>
     </div>
     <p class="card-body">
       Su questo profilo uso un avatar AI per creare contenuti educativi. Lo faccio con etica e trasparenza. Ogni video con il badge <strong style="color:var(--cyan);">🤖 CLONE IN SERVIZIO</strong> è prodotto dal mio clone digitale.
     </p>
-    <div style="background:var(--dark-3);border:2px solid var(--gold);border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px;">
-      <div style="width:40px;height:40px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">✦</div>
-      <div>
-        <div style="font-weight:800;font-size:15px;letter-spacing:0.04em;color:var(--text);">CLONE IN SERVIZIO</div>
-        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.08em;">Digital Sam · AI Content</div>
-      </div>
-    </div>
-    <a href="https://www.notion.so/digitalsam/Dichiarazione-Etica-Clone-AI-Digital-Sam-32d4c0b7381481a9b4f6d88c19a0c096" target="_blank" rel="noopener" class="btn btn-cyan">
-      👉 Leggi la Dichiarazione Etica completa
+    <a href="https://www.notion.so/digitalsam/Dichiarazione-Etica-Clone-AI-Digital-Sam-32d4c0b7381481a9b4f6d88c19a0c096" target="_blank" rel="noopener" class="btn btn-outline-cyan">
+      👉 Leggi la Dichiarazione Etica
     </a>
   </div>
 
   <div class="divider"></div>
 
-  <!-- SEZIONE — PRODOTTI DIGITALI -->
-  <p class="section-label">🛒 Prodotti Digitali</p>
-
-  <div class="card">
-    <div class="card-header">
-      <div>
-        <span class="badge badge-cyan">📘 PDF · €9</span>
-        <div class="card-title">21 Prompt ChatGPT per Imprenditori Locali</div>
-      </div>
-      <div class="card-icon">🏪</div>
-    </div>
-    <p class="card-body">
-      Hai un negozio, uno studio, un ristorante o sei un artigiano? Questi 21 prompt ti permettono di usare ChatGPT per rispondere ai clienti, creare post social, scrivere email e gestire il quotidiano — senza sapere nulla di AI. Copia, incolla, funziona.
-    </p>
-    <ul style="margin:0 0 14px 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:5px;">
-      <li style="font-size:13px;color:var(--text-muted);display:flex;gap:8px;"><span style="color:var(--cyan);">→</span> 7 prompt per comunicare con i clienti</li>
-      <li style="font-size:13px;color:var(--text-muted);display:flex;gap:8px;"><span style="color:var(--cyan);">→</span> 7 prompt per social &amp; contenuti</li>
-      <li style="font-size:13px;color:var(--text-muted);display:flex;gap:8px;"><span style="color:var(--cyan);">→</span> 7 prompt per operatività &amp; gestione</li>
-    </ul>
-    <!-- SOSTITUISCI l'href con il tuo Stripe Payment Link -->
-    <a href="https://buy.stripe.com/8x25kC8l1gso4gZ7vGgYU03" target="_blank" rel="noopener" class="btn btn-cyan">
-      💳 Acquista a €9 →
-    </a>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <div>
-        <span class="badge badge-gold">📒 PDF · €11</span>
-        <div class="card-title">21 Prompt ChatGPT per Creator Digitali</div>
-      </div>
-      <div class="card-icon">🎯</div>
-    </div>
-    <p class="card-body">
-      Vuoi vendere i tuoi prodotti digitali online ma non sai da dove iniziare? Questi 21 prompt ti guidano dalla validazione dell'idea al lancio — con script per video, risposte alle obiezioni, sequenze di vendita e strategie di crescita. Tutto pronto da usare.
-    </p>
-    <ul style="margin:0 0 14px 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:5px;">
-      <li style="font-size:13px;color:var(--text-muted);display:flex;gap:8px;"><span style="color:var(--gold);">→</span> 7 prompt per validare &amp; creare il prodotto</li>
-      <li style="font-size:13px;color:var(--text-muted);display:flex;gap:8px;"><span style="color:var(--gold);">→</span> 7 prompt per vendere senza sembrare un venditore</li>
-      <li style="font-size:13px;color:var(--text-muted);display:flex;gap:8px;"><span style="color:var(--gold);">→</span> 7 prompt per lanciare, scalare &amp; ripetere</li>
-    </ul>
-    <!-- SOSTITUISCI l'href con il tuo Stripe Payment Link -->
-    <a href="https://buy.stripe.com/6oUdR89p5a408xf2bmgYU02" target="_blank" rel="noopener" class="btn btn-gold">
-      💳 Acquista a €11 →
-    </a>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- SEZIONE 7 — CHI SONO -->
+  <!-- CHI SONO -->
   <p class="section-label">✨ Chi Sono</p>
 
   <div class="bio-box card">
     <div class="bio-name">Samantha Del Vecchio</div>
     <div class="bio-handle">aka Digital Sam</div>
     <div class="bio-text">
-      <p>Ho passato 8 anni a fare marketing digitale per le PMI italiane. Poi ho scoperto l'AI e ho capito che potevo fare il doppio in metà tempo. <strong>Spoiler: ci ho preso.</strong></p>
-      <p>Oggi aiuto dentisti, ristoratori e artigiani a non perdere clienti nel vuoto delle chiamate senza risposta — con siti web che rispondono, convincono e prenotano anche alle 2 di notte, mentre tu dormi.</p>
-      <p>Sui social faccio una cosa sola: condivido quello che funziona davvero. Tips e tricks sull'AI, software nuovi testati in prima persona, e quando becco qualcosa di buono e gratuito lo spoilero subito.</p>
-      <p><strong>Non sono una guru. Non vendo corsi. Non faccio aria fritta.<br/>Faccio cose. Faccio risultati.</strong></p>
+      <p>Ho passato anni a fare marketing digitale per le PMI italiane. Poi ho scoperto l'AI e ho capito che potevo fare il doppio in metà tempo. <strong>Spoiler: ci ho preso.</strong></p>
+      <p>Oggi aiuto dentisti, ristoratori e artigiani a non perdere clienti — con siti web che rispondono, convincono e prenotano anche alle 2 di notte.</p>
+      <p><strong>Non sono una guru. Non faccio aria fritta. Faccio cose. Faccio risultati.</strong></p>
     </div>
   </div>
 
   <div class="divider"></div>
 
-  <!-- SEZIONE 8 — SOCIAL & CONTATTI -->
+  <!-- SOCIAL -->
   <p class="section-label">🌐 Trovami su</p>
 
   <div class="social-grid">
     <a href="https://www.instagram.com/digitalsam_it" target="_blank" rel="noopener" class="social-btn">
-      <span class="icon">📸</span>
-      Instagram
+      <span class="icon">📸</span>Instagram
     </a>
     <a href="https://www.tiktok.com/@digitalsam_it" target="_blank" rel="noopener" class="social-btn">
-      <span class="icon">🎵</span>
-      TikTok
+      <span class="icon">🎵</span>TikTok
     </a>
     <a href="https://www.facebook.com/profile.php?id=61587932961176" target="_blank" rel="noopener" class="social-btn">
-      <span class="icon">📘</span>
-      Facebook
+      <span class="icon">📘</span>Facebook
     </a>
     <a href="https://www.linkedin.com/in/samantha-del-vecchio/" target="_blank" rel="noopener" class="social-btn">
-      <span class="icon">💼</span>
-      LinkedIn
+      <span class="icon">💼</span>LinkedIn
     </a>
   </div>
 
   <div class="contact-row">
     <a href="https://digitalsam.it" target="_blank" rel="noopener" class="contact-item">
-      <span class="contact-icon">🌐</span>
-      <span>digitalsam.it</span>
+      <span class="contact-icon">🌐</span><span>digitalsam.it</span>
     </a>
     <a href="mailto:info@digitalsam.it" class="contact-item">
-      <span class="contact-icon">✉️</span>
-      <span>info@digitalsam.it</span>
+      <span class="contact-icon">✉️</span><span>info@digitalsam.it</span>
     </a>
     <a href="https://wa.me/393793290934" target="_blank" rel="noopener" class="contact-item">
-      <span class="contact-icon">💬</span>
-      <span>WhatsApp +39 379 329 0934</span>
+      <span class="contact-icon">💬</span><span>WhatsApp +39 379 329 0934</span>
     </a>
   </div>
 
@@ -700,7 +725,6 @@
 </main>
 
 <script>
-  // Scroll-triggered fade-in for cards
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
@@ -710,7 +734,7 @@
         }
       });
     },
-    { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
   );
 
   document.querySelectorAll('.card, .tool-card, .bio-box').forEach((el, i) => {
@@ -718,11 +742,9 @@
     observer.observe(el);
   });
 
-  // Immediate visibility for above-fold cards
   setTimeout(() => {
     document.querySelectorAll('.card, .tool-card').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight) el.classList.add('visible');
+      if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
     });
   }, 50);
 </script>
