@@ -336,6 +336,26 @@
     .btn-copy:hover  { opacity: 0.88; transform: scale(1.01); box-shadow: 0 6px 20px rgba(245,166,35,0.3); }
     .btn-copy:active { transform: scale(0.98); }
 
+    /* ACCORDION */
+    .accordion-toggle {
+      width: 100%;
+      background: rgba(77,217,240,0.1);
+      border: 1.5px solid rgba(77,217,240,0.3);
+      color: var(--cyan);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 11px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s, border-color 0.2s;
+      letter-spacing: 0.01em;
+      display: block;
+      margin-bottom: 0;
+    }
+    .accordion-toggle:hover { background: rgba(77,217,240,0.18); border-color: var(--cyan); }
+    .accordion-content { margin-top: 12px; }
+
     /* LIST */
     .feature-list {
       margin: 0 0 14px 0;
@@ -668,7 +688,64 @@
   <!-- RISORSE GRATUITE -->
   <p class="section-label">⚡ Risorse Gratuite</p>
 
-  <!-- PRICING PROMPT — Prima risorsa gratuita -->
+  <!-- BRAND TEMPLATE — Prima risorsa gratuita -->
+  <div class="card card-pricing-prompt">
+    <div class="card-header">
+      <div>
+        <span class="badge badge-green">✅ Gratis</span>
+        <div class="card-title card-title-lg">Istruzioni Brand per Claude — Template</div>
+      </div>
+      <div class="card-icon">🤖</div>
+    </div>
+    <p class="prompt-subtitle">Incolla questo in un progetto Claude e non devi più spiegare chi sei ogni volta</p>
+    <p class="card-body">
+      Sostituisci il testo <strong style="color:var(--cyan);">tra parentesi</strong> con i dati della tua attività, poi incollalo nelle istruzioni di sistema di un progetto Claude. Da quel momento Claude sa già chi sei, come lavori e come intestare i documenti.
+    </p>
+    <button class="accordion-toggle" onclick="toggleAccordion(this)" aria-expanded="false">▼ Mostra il template</button>
+    <div class="accordion-content" hidden>
+      <div class="prompt-box">
+        <pre id="template-brand">## Chi sono
+Sono [IL TUO NOME], fondatore/fondatrice di [NOME AGENZIA/ATTIVITÀ].
+Mi occupo di [COSA FAI] per [TARGET CLIENTI].
+[Regime fiscale: partita IVA / ritenuta d'acconto — specifica il tuo]
+
+## Brand
+- Nome: [NOME ATTIVITÀ]
+- Tono di voce: [es. professionale ma umano / ironico / formale]
+- Sito: [URL]
+- Email: [EMAIL]
+- Telefono: [TELEFONO]
+
+## Servizi e prezzi
+- [Servizio 1]: [prezzo setup] + [canone mensile se c'è]
+- [Servizio 2]: [prezzo]
+- [Prodotto digitale]: [prezzo]
+
+## Regole per i documenti
+- Intestazione sempre: [NOME ATTIVITÀ] | [EMAIL] | [SITO] | [TELEFONO]
+- Indica sempre: nome cliente, data, servizio, prezzo, validità 30 giorni
+- Nota fiscale: [inserisci la tua — es. "Compenso soggetto a ritenuta d'acconto 20%"]
+- Tono: [professionale / caldo / formale — scegli]
+- Chiusura: [IL TUO NOME] | [NOME ATTIVITÀ] | [EMAIL]
+
+## Formato preventivo standard
+1. Intestazione tua
+2. Destinatario: Nome, Azienda, P.IVA cliente
+3. Data e numero preventivo
+4. Oggetto
+5. Dettaglio servizio (cosa include / cosa non include)
+6. Prezzo + nota fiscale
+7. Validità: 30 giorni
+8. Modalità pagamento
+9. La tua firma</pre>
+      </div>
+      <button class="btn-copy" onclick="copyTemplate(this)">📋 Copia il Template</button>
+    </div>
+  </div>
+
+  <div class="divider-thin"></div>
+
+  <!-- PRICING PROMPT — Seconda risorsa gratuita -->
   <div class="card card-pricing-prompt">
     <div class="card-header">
       <div>
@@ -811,6 +888,37 @@ Sii diretto e onesto, anche se fa male.</pre>
 </main>
 
 <script>
+  function toggleAccordion(btn) {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    const content = btn.nextElementSibling;
+    btn.setAttribute('aria-expanded', !expanded);
+    if (expanded) {
+      content.hidden = true;
+      btn.textContent = '▼ Mostra il template';
+    } else {
+      content.hidden = false;
+      btn.textContent = '▲ Nascondi il template';
+    }
+  }
+
+  function copyTemplate(btn) {
+    const text = document.getElementById('template-brand').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✅ Copiato!';
+      setTimeout(() => { btn.textContent = '📋 Copia il Template'; }, 2000);
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent = '✅ Copiato!';
+      setTimeout(() => { btn.textContent = '📋 Copia il Template'; }, 2000);
+    });
+  }
+
   function copyPrompt(btn) {
     const text = document.getElementById('prompt-pricing').textContent;
     navigator.clipboard.writeText(text).then(() => {
